@@ -38,7 +38,7 @@ body{
 	border-bottom: 1px solid black;
 
 }
-.form label::after{
+.form label:after{
 	content: "";
 	position: absolute;
 	bottom: -1px;
@@ -68,6 +68,9 @@ body{
 
 .form input:focus  +. lable-name::after, .gorm input:valid + .label-name::after{
 	transform: translateX(0%);
+}
+#login-btn{
+	height: 32px;
 }
 
 

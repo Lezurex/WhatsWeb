@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html>
+<html lang = "de">
 <head>
 	<meta charset="utf-8">
 	<meta name="viewport"  content="width=device-width, initial-scale=1.0">
@@ -11,10 +11,18 @@
 	<h1>WhatsWeb</h1>
 
 	<div class="form">
-		<input type="text" name="name" autocomplete="off" required>
-		<label for="name" class="lable-name">
-			<span class="content-name">Beutzername</span>
+		<div class = "name">
+		<input type="text" name="name" autocomplete="off" required id="login-email">
+		<label for="login-email" class="lable-name"/>
+			<span class="content-name">E-Mail</span>
+		</div>
+		<div class = "password">
+			<input type="text" name="name" autocomplete="off" required id="login-password">
+			<label for="login-password" class="lable-password"/>
+			<span class="content-name">Passwort</span>
+		</div>
 	</div>
+	<img id="login-btn" src="assets/img/right-arrow.png" alt="Pfeil nach rechts">
 
 </body>
 </html>
