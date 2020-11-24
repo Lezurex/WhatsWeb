@@ -1,6 +1,7 @@
 <?php
 
 // PHP
+echo "lalala";
 
 ?>
 
