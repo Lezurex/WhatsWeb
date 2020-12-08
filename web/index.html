@@ -11,29 +11,48 @@
 </head>
 <div>
 	<h1>WhatsWeb</h1>
-<div id="login">
-	<div class="form">
-		<div class = "name">
-		<input type="text" name="name" autocomplete="off" required id="login-email">
-		<label for="login-email" class="lable-name"></label>
-			<span class="content-name">E-Mail</span>
+	<div id="login">
+		<div class="form">
+			<div class = "name">
+			<input type="text" name="name" autocomplete="off" required id="login-email">
+			<label for="login-email" class="lable-name"></label>
+				<span class="content-name">E-Mail</span>
+			</div>
+			<div class = "password">
+				<input type="text" name="name" autocomplete="off" required id="login-password">
+				<label for="login-password" class="lable-password"></label>
+				<span class="content-name">Passwort</span>
+			</div>
 		</div>
-		<div class = "password">
-			<input type="text" name="name" autocomplete="off" required id="login-password">
-			<label for="login-password" class="lable-password"></label>
-			<span class="content-name">Passwort</span>
+		<a href="app/index.html">registrierung</a>
+		<a href="app/forgotPassword.html">passwort vergessen</a>
+		<img id="login-btn" src="assets/img/right-arrow.png" alt="Registrierung">
+		<div></div>
+		<script src="/assets/js/login.js"></script>
+
 		</div>
 	</div>
-	<a href="app/index.html">registrierung</a>
-	<a href="app/forgotPassword.html">passwort vergessen</a>
-	<img id="login-btn" src="assets/img/right-arrow.png" alt="Registrierung">
-	<div></div>
-	<script src="/assets/js/login.js"></script>
-
-</div>
 	<div id="registration">
-
-
+		<div align="center">
+			<h2>Registrierung</h2>
+			<label for="text"><b>username</b></label><br>
+			<input type="text" placeholder="Benutzernamen" name="username" required><br>
+			<label for="password"><b>passwort</b></label><br>
+			<input type="password" placeholder="Passwort" name="passwort" required><br>
+			<label for="password"><b>passwort bestätigen</b></label><br>
+			<input type="password" placeholder="Passwort bestätigen" name="passwort bestätigen" required><br>
+			<input type="submit" value="Senden" />
+		</div>
+	</div>
+	<div id="pasword-lost">
+		<form>
+			<div align="center">
+				<h2>Passwort vergessen</h2>
+				<lable for="text"><b>username</b></lable><br>
+				<input type="email" placeholder="Email" name="Email Adresse" required><br>
+				<input type="submit" value="senden" />
+			</div>
+		</form>
 	</div>
 </body>
 </html>
