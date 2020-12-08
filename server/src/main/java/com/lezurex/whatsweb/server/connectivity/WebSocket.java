@@ -13,9 +13,8 @@ public class WebSocket {
 
     public WebSocket(int port) throws IOException {
         server = new ServerSocket(port);
-        while (true) {
 
-        }
+        startConnectionListener();
     }
 
     public void startConnectionListener() {
@@ -23,7 +22,7 @@ public class WebSocket {
             while (true) {
                 try {
                     Socket socket = server.accept();
-                    System.out.println("[+] Client " + socket.getInetAddress() + " has conncted!");
+                    System.out.println("[I] Client " + socket.getInetAddress() + " has conncted!");
                     new ClientSession(socket);
                 } catch (IOException e) {
                     e.printStackTrace();
