@@ -42,7 +42,7 @@ body{
 	content: "";
 	position: absolute;
 	bottom: -1px;
-	left: 0px;
+	left: 0;
 	height: 100%;
 	width: 100%;
 	border-bottom: 3px solid #5fa8d3;
