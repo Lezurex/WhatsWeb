@@ -18,6 +18,7 @@ body{
  	position: relative;
  	height: 50%;
  	overflow: hidden;
+	border: solid red 3px;
 }
 .form input{
 	width: 100%;
