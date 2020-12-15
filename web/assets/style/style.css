@@ -16,7 +16,7 @@ body{
 .form{
  	width: 50%;
  	position: relative;
- 	height: 50px;
+ 	height: 50%;
  	overflow: hidden;
 }
 .form input{
@@ -69,8 +69,8 @@ body{
 .form input:valid + .label-name .content-name {
 	transform: translateY(-150%);
 	font-size: 14px;
-	color: #5fa8d3;
-
+	color: red;
+	/*#5fa8d3*/
 }
 
 .form input:focus  + .label-name::after, .gorm input:valid + .label-name::after{
