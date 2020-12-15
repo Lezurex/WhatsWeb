@@ -51,11 +51,18 @@ body{
 
 
 }
-.content-name{
+.content-second{
 	position: absolute;
 	bottom: 5px;
 	left: 0px;
 	transition: all 0.3s ease;
+}
+.content-first{
+	position: absolute;
+	bottom: 5px;
+	left: 0px;
+	transition: all 0.3s ease;
+
 }
 
 .form input:focus + .lable-name .content-name,
