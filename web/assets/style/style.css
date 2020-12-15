@@ -80,3 +80,6 @@ body{
 	height: 32px;
 }
 
+#chat-contacts {
+	border: dotted black;
+}
