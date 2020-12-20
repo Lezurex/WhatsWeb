@@ -1,4 +1,4 @@
-package com.lezurex.whatsweb.server;
+package com.lezurex.whatsweb.server.objects;
 
 import org.java_websocket.WebSocket;
 

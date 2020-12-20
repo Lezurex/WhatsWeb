@@ -1,7 +1,10 @@
-package com.lezurex.whatsweb.server;
+package com.lezurex.whatsweb.server.objects;
+
+import lombok.Getter;
 
 import java.util.List;
 
+@Getter
 public class User {
 
     private int userID;
@@ -13,5 +16,6 @@ public class User {
     public User() {
 
     }
+
 
 }

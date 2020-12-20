@@ -1,10 +1,12 @@
 package com.lezurex.whatsweb.server;
 
+import com.lezurex.whatsweb.server.objects.Client;
 import org.java_websocket.WebSocket;
 import org.java_websocket.handshake.ClientHandshake;
 import org.java_websocket.server.WebSocketServer;
 
 import java.net.InetSocketAddress;
+import java.util.HashMap;
 import java.util.Map;
 
 public class Server extends WebSocketServer {
@@ -13,6 +15,7 @@ public class Server extends WebSocketServer {
 
     public Server(int port) {
         super(new InetSocketAddress(port));
+        clients = new HashMap<WebSocket, Client>();
     }
 
     @Override
@@ -28,10 +31,8 @@ public class Server extends WebSocketServer {
 
     @Override
     public void onMessage(WebSocket webSocket, String s) {
-        for (Map.Entry<WebSocket, Client> entry : clients.entrySet()) {
-            if (entry.getKey() == webSocket) {
-                entry.getValue().handleInput(s);
-            }
+        if (clients.containsKey(webSocket)) {
+            clients.get(webSocket).handleInput(s);
         }
     }
 
@@ -42,6 +43,6 @@ public class Server extends WebSocketServer {
 
     @Override
     public void onStart() {
-
+        System.out.println("WebSocket server started on port " + getPort());
     }
 }
