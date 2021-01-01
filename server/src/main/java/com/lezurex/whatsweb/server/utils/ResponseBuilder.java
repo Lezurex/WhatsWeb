@@ -14,8 +14,9 @@ public class ResponseBuilder {
         return jsonObject.toString();
     }
 
-    public static String buildResponse(JSONObject data) {
+    public static String buildResponse(JSONObject data, String command) {
         JSONObject jsonObject = new JSONObject();
+        data.put("command", command);
         jsonObject.put("data", data);
         return jsonObject.toString();
     }

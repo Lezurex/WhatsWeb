@@ -6,6 +6,7 @@ import com.lezurex.whatsweb.server.utils.Row;
 import com.lezurex.whatsweb.server.utils.RowType;
 
 import java.io.IOException;
+import java.util.UUID;
 
 public class Main {
 

@@ -10,6 +10,8 @@ import com.lezurex.whatsweb.server.utils.ResponseBuilder;
 import org.java_websocket.WebSocket;
 import org.json.JSONObject;
 
+import java.util.UUID;
+
 public class LoginCommand implements ServerCommand {
     @Override
     public void performCommand(JSONObject data, Client client) {
@@ -18,8 +20,8 @@ public class LoginCommand implements ServerCommand {
         if (db.getStringFromTable("users", "token", new Key("uuid", data.getString("uuid"))).equals(data.getString("token"))) {
             JSONObject response = new JSONObject();
             response.put("success", "true");
-            client.setUser(new User(data.getString("uuid")));
-            client.getSocket().send(ResponseBuilder.buildResponse(response));
+            client.setUser(User.loadUser(UUID.fromString(data.getString("uuid"))));
+            client.getSocket().send(ResponseBuilder.buildResponse(response, "login"));
             client.getSocket().send("Your username is: " + client.getUser().getUsername());
         } else {
             client.getSocket().send(ResponseBuilder.buildError("Token denied", "Provided token/uuid is invalid", "403"));

@@ -4,31 +4,43 @@ import com.lezurex.whatsweb.server.Main;
 import com.lezurex.whatsweb.server.utils.DatabaseAdapter;
 import com.lezurex.whatsweb.server.utils.Key;
 import lombok.Getter;
+import org.checkerframework.checker.units.qual.K;
+import org.json.JSONArray;
+import org.json.JSONObject;
 
-import java.util.List;
+import java.util.*;
 
 @Getter
 public class User {
 
-    private String uuid;
+    private static final Map<UUID, User> loadedUsers = new HashMap<>();
+
+    private UUID uuid;
     private String username;
     private String email;
     private List<Group> groups;
     private List<User> friends;
     private double lastSeen;
 
-    public User(String uuid) {
-        DatabaseAdapter db = Main.databaseAdapter;
-        this.uuid = uuid;
-        this.username = db.getStringFromTable("users", "username", new Key("uuid", uuid));
-        this.email = db.getStringFromTable("users", "email", new Key("uuid", uuid));
-        String lastSeenDB = db.getStringFromTable("users", "lastSeen", new Key("uuid", uuid));
-        if (lastSeenDB != null) {
-            this.lastSeen = Double.parseDouble(lastSeenDB);
+    public static User loadUser(UUID uuid) {
+        if (loadedUsers.containsKey(uuid)) {
+            return loadedUsers.get(uuid);
         } else {
-            this.lastSeen = 0;
+            User newUser = new User(uuid);
+            loadedUsers.put(uuid, newUser);
+            return newUser;
         }
-        // TODO: Initialize groups
     }
 
+    private User(UUID uuid) {
+        System.out.println("new User");
+        DatabaseAdapter db = Main.databaseAdapter;
+        this.uuid = uuid;
+        this.username = db.getStringFromTable("users", "username", new Key("uuid", uuid.toString()));
+        this.email = db.getStringFromTable("users", "email", new Key("uuid", uuid.toString()));
+    }
+
+    public static Map<UUID, User> getLoadedUsers() {
+        return loadedUsers;
+    }
 }
