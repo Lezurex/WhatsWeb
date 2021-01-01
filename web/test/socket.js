@@ -12,5 +12,13 @@ function status() {
 
 socket.onopen = function (ev) {
     console.log("Socket opened");
-    socket.send("Login");
+    let message = {
+        "data": {
+            "command": "login",
+            "uuid": "0123-4567-8901",
+            "token": "token"
+        }
+    }
+    socket.send(JSON.stringify(message));
+    console.log("Sent login")
 }

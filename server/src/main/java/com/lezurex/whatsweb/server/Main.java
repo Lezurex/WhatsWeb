@@ -10,6 +10,7 @@ import java.io.IOException;
 public class Main {
 
     public static Database database;
+    public static DatabaseAdapter databaseAdapter;
 
     public static void main(String[] args) throws IOException {
         initDatabase();
@@ -18,21 +19,25 @@ public class Main {
     }
 
     public static void initDatabase() {
+        System.out.println("Connecting to database...");
         database = new Database("localhost", "root", "", "whatsweb", 3306);
         database.connect();
 
-        DatabaseAdapter db = new DatabaseAdapter(database);
+        databaseAdapter = new DatabaseAdapter(database);
 
-        db.createTable("users",
+        System.out.println("Initializing tables...");
+
+        databaseAdapter.createTable("users",
                 new Row("uuid", RowType.VARCHAR),
                 new Row("username", RowType.VARCHAR),
                 new Row("password", RowType.VARCHAR),
                 new Row("email", RowType.VARCHAR),
                 new Row("friends", RowType.LONGTEXT),
                 new Row("groups", RowType.LONGTEXT),
-                new Row("lastSeen", RowType.DOUBLE));
+                new Row("lastSeen", RowType.DOUBLE),
+                new Row("token", RowType.VARCHAR));
 
-        db.createTable("groups",
+        databaseAdapter.createTable("groups",
                 new Row("uuid", RowType.VARCHAR),
                 new Row("members", RowType.MEDIUMTEXT),
                 new Row("history", RowType.LONGTEXT));

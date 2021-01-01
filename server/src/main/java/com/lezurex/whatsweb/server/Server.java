@@ -21,7 +21,7 @@ public class Server extends WebSocketServer {
     @Override
     public void onOpen(WebSocket webSocket, ClientHandshake clientHandshake) {
         clients.put(webSocket, new Client(webSocket));
-        System.out.println("Connected " + webSocket.getRemoteSocketAddress().getAddress());
+        System.out.println("Connected to " + webSocket.getRemoteSocketAddress().getAddress());
     }
 
     @Override
