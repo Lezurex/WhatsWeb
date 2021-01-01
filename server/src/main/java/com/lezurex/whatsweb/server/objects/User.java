@@ -18,8 +18,8 @@ public class User {
     private UUID uuid;
     private String username;
     private String email;
-    private List<Group> groups;
-    private List<User> friends;
+    private ArrayList<Group> groups;
+    private ArrayList<User> friends;
     private double lastSeen;
 
     public static User loadUser(UUID uuid) {
@@ -33,11 +33,29 @@ public class User {
     }
 
     private User(UUID uuid) {
-        System.out.println("new User");
         DatabaseAdapter db = Main.databaseAdapter;
         this.uuid = uuid;
         this.username = db.getStringFromTable("users", "username", new Key("uuid", uuid.toString()));
         this.email = db.getStringFromTable("users", "email", new Key("uuid", uuid.toString()));
+    }
+
+    public List<User> getFriends() {
+        if (friends == null) {
+            DatabaseAdapter databaseAdapter = Main.databaseAdapter;
+
+            friends = new ArrayList<User>();
+            String result = databaseAdapter.getStringFromTable("users", "friends", new Key("uuid", uuid.toString()));
+            if (result != null) {
+                JSONArray jsonArray = new JSONArray(result);
+                for (int i = 0; i < jsonArray.length(); i++) {
+                    UUID friendUUID = UUID.fromString(jsonArray.getString(i));
+                    friends.add(User.loadUser(friendUUID));
+                }
+            }
+            return friends;
+
+        } else
+            return friends;
     }
 
     public static Map<UUID, User> getLoadedUsers() {

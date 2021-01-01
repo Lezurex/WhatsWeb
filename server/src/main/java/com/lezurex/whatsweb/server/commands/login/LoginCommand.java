@@ -17,14 +17,17 @@ public class LoginCommand implements ServerCommand {
     public void performCommand(JSONObject data, Client client) {
         WebSocket socket = client.getSocket();
         DatabaseAdapter db = Main.databaseAdapter;
-        if (db.getStringFromTable("users", "token", new Key("uuid", data.getString("uuid"))).equals(data.getString("token"))) {
-            JSONObject response = new JSONObject();
-            response.put("success", "true");
-            client.setUser(User.loadUser(UUID.fromString(data.getString("uuid"))));
-            client.getSocket().send(ResponseBuilder.buildResponse(response, "login"));
-            client.getSocket().send("Your username is: " + client.getUser().getUsername());
-        } else {
+        String result = db.getStringFromTable("users", "token", new Key("uuid", data.getString("uuid")));
+        if (result != null) {
+            if (result.equals(data.getString("token"))){
+                JSONObject response = new JSONObject();
+                response.put("success", "true");
+                client.setUser(User.loadUser(UUID.fromString(data.getString("uuid"))));
+                client.getSocket().send(ResponseBuilder.buildResponse(response, "login"));
+
+            } else
+                client.getSocket().send(ResponseBuilder.buildError("Token denied", "Provided token/uuid is invalid", "403"));
+        } else 
             client.getSocket().send(ResponseBuilder.buildError("Token denied", "Provided token/uuid is invalid", "403"));
-        }
     }
 }
