@@ -7,11 +7,7 @@ import com.lezurex.whatsweb.server.utils.Insert;
 import com.lezurex.whatsweb.server.utils.Key;
 import org.json.JSONArray;
 
-import java.lang.reflect.Type;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.UUID;
+import java.util.*;
 
 public class Chat {
 
@@ -57,6 +53,28 @@ public class Chat {
 
         }
         return chatElements;
+    }
+
+    /**
+     * Gets a range of {@link ChatElement ChatElements} from the last UUID
+     * @param lastUUID Last UUID of the list
+     * @param range Range counted backwards from lastUUID
+     * @return Map with UUIDs and ChatElements
+     */
+    public ArrayList<ChatElement> getChatElements(UUID lastUUID, int range) {
+        ArrayList<ChatElement> chatElements = this.getChatElements();
+        ArrayList<ChatElement> returnElements = new ArrayList<>();
+        for (int i = 0; i < chatElements.size(); i++) {
+            ChatElement chatElement = chatElements.get(i);
+            if (chatElement.getUuid() == lastUUID) {
+                int lastIndex = i;
+                for (int j = lastIndex; j > (chatElements.size() - range) ; j--) {
+                    returnElements.add(chatElements.get(j));
+                }
+                Collections.reverse(returnElements);
+            }
+        }
+        return returnElements;
     }
 
 }
