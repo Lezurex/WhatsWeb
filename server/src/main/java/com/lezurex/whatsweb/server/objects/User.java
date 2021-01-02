@@ -39,7 +39,7 @@ public class User {
         this.email = db.getStringFromTable("users", "email", new Key("uuid", uuid.toString()));
     }
 
-    public List<User> getFriends() {
+    public ArrayList<User> getFriends() {
         if (friends == null) {
             DatabaseAdapter databaseAdapter = Main.databaseAdapter;
 

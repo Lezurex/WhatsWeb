@@ -1,5 +1,6 @@
 package com.lezurex.whatsweb.server.commands;
 
+import com.lezurex.whatsweb.server.commands.friends.FriendsCommand;
 import com.lezurex.whatsweb.server.commands.login.LoginCommand;
 
 import java.util.HashMap;
@@ -21,5 +22,6 @@ public class ServerCommandManager {
     private ServerCommandManager() {
         this.commandMap = new HashMap<>();
         this.commandMap.put("login", new LoginCommand());
+        this.commandMap.put("friends", new FriendsCommand());
     }
 }

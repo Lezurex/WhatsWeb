@@ -27,7 +27,7 @@ public class LoginCommand implements ServerCommand {
 
             } else
                 client.getSocket().send(ResponseBuilder.buildError("Token denied", "Provided token/uuid is invalid", "403"));
-        } else 
+        } else
             client.getSocket().send(ResponseBuilder.buildError("Token denied", "Provided token/uuid is invalid", "403"));
     }
 }

@@ -10,7 +10,7 @@ class ResponseHandler {
         let command;
         if (Object.keys(json)[0] == "data") {
             command = json.data["command"];
-            this.commandMap[command].call(message);
+            this.commandMap[command](json.data);
         } else if (Object.keys(json)[0] == "error") {
             console.log(json.error);
         }
@@ -18,7 +18,15 @@ class ResponseHandler {
 
     initFunctions() {
         this.commandMap["login"] = function (message) {
-            console.log("login called")
+
+        }
+        this.commandMap["friends"] = function (message) {
+            switch (message.subcommand) {
+                case "get":
+                    message['friends'].forEach((item) => {
+                        console.log(item);
+                    })
+            }
         }
     }
 
@@ -42,7 +50,7 @@ socket.onopen = function (event) {
     let message = {
         "data": {
             "command": "login",
-            "uuid": "b0d43c22-6392-4237-8619-e75b5ed41f9",
+            "uuid": "b0d43c22-6392-4237-8619-e75b5ed41f9f",
             "token": "token"
         }
     }
