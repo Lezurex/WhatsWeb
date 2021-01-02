@@ -19,7 +19,7 @@ public class User {
     private String username;
     private String email;
     private ArrayList<Group> groups;
-    private ArrayList<User> friends;
+    private Map<User, Chat> friends;
     private double lastSeen;
 
     public static User loadUser(UUID uuid) {
@@ -39,17 +39,19 @@ public class User {
         this.email = db.getStringFromTable("users", "email", new Key("uuid", uuid.toString()));
     }
 
-    public ArrayList<User> getFriends() {
+    public Map<User, Chat> getFriends() {
         if (friends == null) {
             DatabaseAdapter databaseAdapter = Main.databaseAdapter;
 
-            friends = new ArrayList<User>();
+            friends = new HashMap<User, Chat>();
             String result = databaseAdapter.getStringFromTable("users", "friends", new Key("uuid", uuid.toString()));
             if (result != null) {
                 JSONArray jsonArray = new JSONArray(result);
                 for (int i = 0; i < jsonArray.length(); i++) {
-                    UUID friendUUID = UUID.fromString(jsonArray.getString(i));
-                    friends.add(User.loadUser(friendUUID));
+                    JSONObject friend = jsonArray.getJSONObject(i);
+                    UUID friendUUID = UUID.fromString(friend.getString("uuid"));
+                    UUID chatUUID = UUID.fromString(friend.getString("chatuuid"));
+                    friends.put(User.loadUser(friendUUID), Chat.loadChat(chatUUID));
                 }
             }
             return friends;

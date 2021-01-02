@@ -42,5 +42,9 @@ public class Main {
                 new Row("uuid", RowType.VARCHAR),
                 new Row("members", RowType.MEDIUMTEXT),
                 new Row("history", RowType.LONGTEXT));
+
+        databaseAdapter.createTable("chats",
+                new Row("uuid", RowType.VARCHAR),
+                new Row("history", RowType.LONGTEXT));
     }
 }

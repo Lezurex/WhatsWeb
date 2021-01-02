@@ -1,6 +1,7 @@
 package com.lezurex.whatsweb.server.commands.friends;
 
 import com.lezurex.whatsweb.server.commands.ServerCommand;
+import com.lezurex.whatsweb.server.objects.Chat;
 import com.lezurex.whatsweb.server.objects.Client;
 import com.lezurex.whatsweb.server.objects.User;
 import com.lezurex.whatsweb.server.utils.ResponseBuilder;
@@ -8,6 +9,7 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.Map;
 
 public class FriendsCommand implements ServerCommand {
 
@@ -22,15 +24,15 @@ public class FriendsCommand implements ServerCommand {
     }
 
     private void getFriends(Client client) {
-        ArrayList<User> friends = client.getUser().getFriends();
+        Map<User, Chat> friends = client.getUser().getFriends();
         JSONObject responseData = new JSONObject();
         responseData.put("subcommand", "get");
         JSONArray jsonArray = new JSONArray();
-        for (User user : friends) {
+        for (Map.Entry<User, Chat> entry : friends.entrySet()) {
             JSONObject jsonObject = new JSONObject();
-            jsonObject.put("username", user.getUsername());
-            jsonObject.put("uuid", user.getUuid().toString());
-            jsonObject.put("lastSeen", user.getLastSeen());
+            jsonObject.put("username", entry.getKey().getUsername());
+            jsonObject.put("uuid", entry.getKey().getUuid().toString());
+            jsonObject.put("lastSeen", entry.getKey().getLastSeen());
             jsonArray.put(jsonObject);
         }
         responseData.put("friends", jsonArray);
