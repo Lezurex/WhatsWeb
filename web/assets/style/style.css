@@ -32,3 +32,12 @@ body {
 .form-card label {
     transform: translateY(10px);
 }
+#login{
+    flex-direction: column;
+    align-items: center;
+}
+#login a{
+    color: #096BA5;
+    text-decoration:underline #096BA5;
+}
+
