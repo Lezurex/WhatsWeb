@@ -6,6 +6,7 @@ import com.lezurex.whatsweb.server.utils.DatabaseAdapter;
 import com.lezurex.whatsweb.server.utils.Insert;
 import com.lezurex.whatsweb.server.utils.Key;
 import org.json.JSONArray;
+import org.json.JSONObject;
 
 import java.util.*;
 
@@ -24,6 +25,11 @@ public class Chat {
             loadedChats.put(uuid, newChat);
             return newChat;
         }
+    }
+
+    public static Chat createChat() {
+        UUID uuid = UUID.randomUUID();
+        return null;
     }
 
     private Chat(UUID uuid) {
@@ -75,6 +81,18 @@ public class Chat {
             }
         }
         return returnElements;
+    }
+
+    public void addMessage(ChatElement chatElement) {
+        chatElements.add(chatElement);
+        JSONArray jsonArray = new JSONArray();
+        for (ChatElement element : chatElements) {
+            Gson gson = new Gson();
+            String jsonString = gson.toJson(element);
+            jsonArray.put(new JSONObject(jsonString));
+        }
+        DatabaseAdapter databaseAdapter = Main.databaseAdapter;
+        databaseAdapter.updateValue("chats", "history", jsonArray.toString(), new Key("uuid", uuid.toString()));
     }
 
 }

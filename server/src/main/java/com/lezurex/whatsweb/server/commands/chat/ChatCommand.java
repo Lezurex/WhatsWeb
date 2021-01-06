@@ -12,7 +12,14 @@ public class ChatCommand implements ServerCommand {
             case "getFull":
                 getFullChat(client);
                 break;
+            case "getInfo":
+                getInfo(client);
+                break;
         }
+    }
+
+    private void getInfo(Client client) {
+
     }
 
     private void getFullChat(Client client) {
