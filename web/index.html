@@ -12,15 +12,37 @@
 </head>
 <body>
 <h1>WhatsWeb</h1>
-<div class="form-area">
+<div class="form-area" id="login">
     <div class="form-card">
         <label for="login-email">E-Mail</label>
         <input type="email" id="login-email">
-        <label for="login-password">Password</label>
+        <label for="login-password">Passwort</label>
         <input type="password" id="login-password">
+        <input type = "submit" value="senden"/>
+    <a id = "forgot-password-link " href="">Passwort vergessen?</a><br>
+    <a id = "registration-link" href="">Noch kein Konto?</a>
     </div>
 </div>
-
+<div class="form-area" id="registration">
+    <div class="form-card">
+        <label for="login-email">E-Mail</label>
+        <input type="email" id="registration-email">
+        <label for="login-password">Passwort</label>
+        <input type="password" id="registration-password">
+        <label for="login-password">Passwort wiederholen</label>
+        <input type="password" id="registration-password-repeat">
+        <input type = "submit" value="speichern"/>
+    </div>
+</div>
+<div class = "form-area" id="forgot">
+    <div class = "form-card">
+        <h2>Passwort vergessen</h2>
+        <p>Gib deine E-Mailadresse ein</p>
+        <label for="login-email">E-Mail</label>
+        <input type="email" id="forgotpassword-email">
+        <input type = "submit" value="senden"/>
+    </div>
+</div>
 <script src="assets/js/login.js"></script>
 </body>
 </html>

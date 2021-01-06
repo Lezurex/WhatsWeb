@@ -1,0 +1,47 @@
+* {
+    font-size: 20px;
+}
+
+#grid-container{
+    display: grid;
+    grid-template-rows: 2fr 8fr 3fr;
+    grid-template-columns: 2fr 2fr 3fr;
+    grid-template-areas:
+'contacts main main'
+'contacts chat chat'
+'contacts chat-field chat-field';
+}
+
+.main {
+    grid-area: main;
+    background-color: orange;
+}
+
+.contacts{
+    grid-area: contacts;
+    background-color: antiquewhite;
+}
+
+.chat {
+    grid-area: chat;
+    background-color: blueviolet;
+}
+
+textarea {
+    width: 100%;
+    height: 100px;
+    padding-top: 12px;
+    padding-bottom: 20px;
+    box-sizing: border-box;
+    border: 2px solid #ccc;
+    border-radius: 4px;
+    background-color: green;
+    font-size: 16px;
+    resize: none;
+}
+
+.chat-field {
+
+    grid-area: chat-field;
+
+}
