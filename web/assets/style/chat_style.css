@@ -1,47 +1,95 @@
-* {
-    font-size: 20px;
-}
-
-#grid-container{
-    display: grid;
-    grid-template-rows: 2fr 8fr 3fr;
-    grid-template-columns: 2fr 2fr 3fr;
-    grid-template-areas:
-'contacts main main'
-'contacts chat chat'
-'contacts chat-field chat-field';
-}
-
-.main {
-    grid-area: main;
-    background-color: orange;
-}
-
-.contacts{
-    grid-area: contacts;
-    background-color: antiquewhite;
-}
-
-.chat {
-    grid-area: chat;
-    background-color: blueviolet;
-}
-
-textarea {
+html, body {
+    margin: 0;
+    padding: 0;
+    font-family: Roboto, Arial, SansSerif, serif;
+    height: 100%;
     width: 100%;
-    height: 100px;
-    padding-top: 12px;
-    padding-bottom: 20px;
-    box-sizing: border-box;
-    border: 2px solid #ccc;
-    border-radius: 4px;
-    background-color: green;
-    font-size: 16px;
-    resize: none;
 }
 
-.chat-field {
+body {
+    padding: 2rem;
+    box-sizing: border-box;
+}
 
-    grid-area: chat-field;
+main {
+    height: 100%;
+    width: 100%;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+    display: flex;
+    border-radius: 10px;
+}
 
+#chats-list-panel {
+    background-color: #eaeaea;
+    flex-grow: 1;
+}
+
+#chat-panel {
+    display: flex;
+    flex-direction: column;
+    background-color: lightgray;
+    flex-grow: 5;
+}
+
+#chat-header {
+    box-sizing: border-box;
+    width: 100%;
+    padding: 0.5rem 1rem;
+    background-color: gray;
+}
+
+#chat-content {
+    overflow-y: scroll;
+    flex-grow: 1;
+}
+
+#chats-header {
+    box-sizing: border-box;
+    width: 100%;
+    padding: 0.5rem 1rem;
+    background-color: gray;
+}
+
+#chat-input-area {
+    padding: 0.5rem 1rem;
+    background-color: gray;
+    display: flex;
+    align-items: center;
+}
+
+#chat-input-area input {
+    flex-grow: 1;
+}
+
+.chat-h1 {
+    margin: 0;
+}
+
+.message {
+    display: inline-flex;
+    width: 100%;
+}
+
+.message-right {
+    justify-content: flex-end;
+}
+
+.message div {
+    border-radius: 15px;
+    box-shadow: 0 0 10px rgba(0,0,0,0.5);
+    padding: 0.5rem;
+    margin: 1rem;
+}
+
+.message-left div {
+    background-color: dodgerblue;
+}
+
+.message-right div {
+    background-color: limegreen;
+}
+
+.message h1 {
+    margin: 0.25rem;
+    font-size: 1rem;
 }

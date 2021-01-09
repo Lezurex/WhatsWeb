@@ -1,31 +1,47 @@
 <!DOCTYPE html>
 <html lang="de">
 <head>
-    <meta charset="utf-8">
+    <meta charset="UTF-8">
     <meta name="viewport"  content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <link rel="stylesheet" type="text/css" href="assets/style/style.css">
-    <title>WhatsWeb</title>
-
-
+    <link rel="stylesheet" type="text/css" href="../assets/style/chat_style.css">
+    <title>Whatsweb</title>
 </head>
 <body>
 
-
-<form>
-    <div align="center">
-        <h2>Registrierung</h2>
-         <label for="text"><b>username</b></label><br>
-         <input type="text" placeholder="Benutzernamen" name="username" required><br>
-         <label for="password"><b>passwort</b></label><br>
-         <input type="password" placeholder="Passwort" name="passwort" required><br>
-         <label for="password"><b>passwort bestätigen</b></label><br>
-         <input type="password" placeholder="Passwort bestätigen" name="passwort bestätigen" required><br>
-         <input type="submit" value="Senden" />
-
+<main>
+    <aside id="chats-list-panel">
+        <div id="chats-header">
+            <h1 class="chat-h1">WhatsWeb</h1>
+        </div>
+        <ul id="chats-list">
+            <li>A</li>
+            <li>B</li>
+        </ul>
+    </aside>
+    <div id="chat-panel">
+        <div id="chat-header">
+            <h1 class="chat-h1">Gruppe 1</h1>
+        </div>
+        <div id="chat-content">
+            <div class="message message-right">
+                <div>
+                    <h1>Lenny Angst</h1>
+                </div>
+            </div>
+            <div class="message message-left">
+                <div>
+                    <h1>Lenny Angst</h1>
+                </div>
+            </div>
+        </div>
+        <div id="chat-input-area">
+            <label for="chat-input">Nachricht:</label>
+            <input type="text" id="chat-input">
+            <button id="chat-input-send-btn">Senden</button>
+        </div>
     </div>
-</form>
-
+</main>
 
 </body>
 </html>
