@@ -32,4 +32,37 @@ $(document).ready(function () {
     }));
 })
 
+    let x = document.getElementById("forgot");
+    x.style.display = "none";
+
+    x = document.getElementById("registration");
+    x.style.display = "none";
+function toggleRegistration() {
+    let x = document.getElementById("registration");
+    if (x.style.display === "none") {
+        x.style.display = "block";
+        x = document.getElementById("login");
+        x.style.display = "none";
+    } else {
+        x.style.display = "none";
+        x = document.getElementById("login");
+        x.style.display = "block";
+    }
+}
+function togglePasswordReset() {
+    let x = document.getElementById("forgot");
+    if (x.style.display === "none") {
+        x.style.display = "block";
+        x = document.getElementById("login");
+        x.style.display = "none";
+    } else {
+        x.style.display = "none";
+        x = document.getElementById("login");
+        x.style.display = "block";
+    }
+}
+
+
+
+
 
