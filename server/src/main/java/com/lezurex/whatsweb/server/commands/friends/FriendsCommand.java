@@ -1,6 +1,7 @@
 package com.lezurex.whatsweb.server.commands.friends;
 
 import com.lezurex.whatsweb.server.commands.ServerCommand;
+import com.lezurex.whatsweb.server.enums.ResponseType;
 import com.lezurex.whatsweb.server.objects.Chat;
 import com.lezurex.whatsweb.server.objects.Client;
 import com.lezurex.whatsweb.server.objects.User;
@@ -36,6 +37,6 @@ public class FriendsCommand implements ServerCommand {
             jsonArray.put(jsonObject);
         }
         responseData.put("friends", jsonArray);
-        client.getSocket().send(ResponseBuilder.buildResponse(responseData, "friends"));
+        client.getSocket().send(new ResponseBuilder(ResponseType.RESPONSE).setResponseCommand("friends").setResponseData(responseData).build());
     }
 }

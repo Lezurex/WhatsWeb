@@ -2,6 +2,7 @@ package com.lezurex.whatsweb.server.commands.login;
 
 import com.lezurex.whatsweb.server.Main;
 import com.lezurex.whatsweb.server.commands.ServerCommand;
+import com.lezurex.whatsweb.server.enums.ResponseType;
 import com.lezurex.whatsweb.server.objects.Client;
 import com.lezurex.whatsweb.server.objects.User;
 import com.lezurex.whatsweb.server.database.DatabaseAdapter;
@@ -24,11 +25,17 @@ public class LoginCommand implements ServerCommand {
                 JSONObject response = new JSONObject();
                 response.put("success", "true");
                 client.setUser(User.loadUser(UUID.fromString(data.getString("uuid"))));
-                client.getSocket().send(ResponseBuilder.buildResponse(response, "login"));
+                client.getSocket().send(new ResponseBuilder(ResponseType.RESPONSE).setErrorTitle("login").setResponseData(response).build());
 
             } else
-                client.getSocket().send(ResponseBuilder.buildError("Token denied", "Provided token/uuid is invalid", "403"));
+                client.getSocket().send(new ResponseBuilder(ResponseType.ERROR).
+                        setErrorTitle("Token denied").
+                        setErrorDescription("Provided token/uuid is invalid").
+                        setErrorCode("403").build());
         } else
-            client.getSocket().send(ResponseBuilder.buildError("Token denied", "Provided token/uuid is invalid", "403"));
+            client.getSocket().send(new ResponseBuilder(ResponseType.ERROR).
+                    setErrorTitle("Token denied").
+                    setErrorDescription("Provided token/uuid is invalid").
+                    setErrorCode("403").build());
     }
 }
