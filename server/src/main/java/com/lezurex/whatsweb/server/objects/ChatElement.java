@@ -5,15 +5,12 @@ import lombok.Setter;
 
 import java.util.UUID;
 
-@Getter
-@Setter
+@Getter @Setter
 public class ChatElement {
 
     private User author;
     private String content;
     private double timestamp;
     private UUID uuid;
-
-
 
 }

@@ -1,9 +1,9 @@
 package com.lezurex.whatsweb.server.objects;
 
 import com.lezurex.whatsweb.server.Main;
-import com.lezurex.whatsweb.server.utils.DatabaseAdapter;
-import com.lezurex.whatsweb.server.utils.Insert;
-import com.lezurex.whatsweb.server.utils.Key;
+import com.lezurex.whatsweb.server.database.DatabaseAdapter;
+import com.lezurex.whatsweb.server.database.objects.Insert;
+import com.lezurex.whatsweb.server.database.objects.Key;
 
 import java.util.HashMap;
 import java.util.Map;

@@ -2,9 +2,9 @@ package com.lezurex.whatsweb.server.objects;
 
 import com.google.gson.Gson;
 import com.lezurex.whatsweb.server.Main;
-import com.lezurex.whatsweb.server.utils.DatabaseAdapter;
-import com.lezurex.whatsweb.server.utils.Insert;
-import com.lezurex.whatsweb.server.utils.Key;
+import com.lezurex.whatsweb.server.database.DatabaseAdapter;
+import com.lezurex.whatsweb.server.database.objects.Insert;
+import com.lezurex.whatsweb.server.database.objects.Key;
 import org.json.JSONArray;
 import org.json.JSONObject;
 

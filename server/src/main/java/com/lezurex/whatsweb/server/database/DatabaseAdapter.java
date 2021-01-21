@@ -1,6 +1,10 @@
-package com.lezurex.whatsweb.server.utils;
+package com.lezurex.whatsweb.server.database;
 
 import com.google.common.collect.Lists;
+import com.lezurex.whatsweb.server.database.objects.Insert;
+import com.lezurex.whatsweb.server.database.objects.Key;
+import com.lezurex.whatsweb.server.database.objects.Row;
+import com.lezurex.whatsweb.server.database.enums.RowType;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;

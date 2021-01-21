@@ -1,9 +1,9 @@
-package com.lezurex.whatsweb.server.utils;
+package com.lezurex.whatsweb.server.database.objects;
 
 public class Key {
 
-    private String row;
-    private String keyWord;
+    private final String row;
+    private final String keyWord;
 
     public Key(String row, String keyWord) {
         this.row = row;

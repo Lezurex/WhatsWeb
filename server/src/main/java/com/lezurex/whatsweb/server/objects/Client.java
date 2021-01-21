@@ -3,12 +3,14 @@ package com.lezurex.whatsweb.server.objects;
 import com.lezurex.whatsweb.server.commands.ServerCommand;
 import com.lezurex.whatsweb.server.commands.ServerCommandManager;
 import lombok.Getter;
+import lombok.Setter;
 import org.java_websocket.WebSocket;
 import org.json.JSONObject;
 
 @Getter
 public class Client {
 
+    @Setter
     private User user;
     private WebSocket socket;
 
@@ -23,17 +25,5 @@ public class Client {
         String command = data.getString("command");
         ServerCommand serverCommand = ServerCommandManager.getInstance().commandMap.get(command);
         serverCommand.performCommand(data, this);
-    }
-
-    public User getUser() {
-        return user;
-    }
-
-    public void setUser(User user) {
-        this.user = user;
-    }
-
-    public WebSocket getSocket() {
-        return socket;
     }
 }

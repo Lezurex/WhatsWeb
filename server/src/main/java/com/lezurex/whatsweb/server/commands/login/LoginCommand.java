@@ -4,8 +4,8 @@ import com.lezurex.whatsweb.server.Main;
 import com.lezurex.whatsweb.server.commands.ServerCommand;
 import com.lezurex.whatsweb.server.objects.Client;
 import com.lezurex.whatsweb.server.objects.User;
-import com.lezurex.whatsweb.server.utils.DatabaseAdapter;
-import com.lezurex.whatsweb.server.utils.Key;
+import com.lezurex.whatsweb.server.database.DatabaseAdapter;
+import com.lezurex.whatsweb.server.database.objects.Key;
 import com.lezurex.whatsweb.server.utils.ResponseBuilder;
 import org.java_websocket.WebSocket;
 import org.json.JSONObject;
@@ -18,6 +18,7 @@ public class LoginCommand implements ServerCommand {
         WebSocket socket = client.getSocket();
         DatabaseAdapter db = Main.databaseAdapter;
         String result = db.getStringFromTable("users", "token", new Key("uuid", data.getString("uuid")));
+
         if (result != null) {
             if (result.equals(data.getString("token"))){
                 JSONObject response = new JSONObject();
