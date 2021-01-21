@@ -1,4 +1,4 @@
-package com.lezurex.whatsweb.server.utils;
+package com.lezurex.whatsweb.server.database.enums;
 
 public enum RowType {
 

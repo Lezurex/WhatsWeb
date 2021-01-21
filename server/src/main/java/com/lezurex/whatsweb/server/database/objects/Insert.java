@@ -1,9 +1,9 @@
-package com.lezurex.whatsweb.server.utils;
+package com.lezurex.whatsweb.server.database.objects;
 
 public class Insert {
 
-    private String row;
-    private String value;
+    private final String row;
+    private final String value;
 
     public Insert(String row, String value) {
         this.row = row;

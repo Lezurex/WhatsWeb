@@ -1,4 +1,4 @@
-package com.lezurex.whatsweb.server.utils;
+package com.lezurex.whatsweb.server.database;
 
 import java.sql.Connection;
 import java.sql.DriverManager;

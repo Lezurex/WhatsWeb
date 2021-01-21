@@ -1,4 +1,6 @@
-package com.lezurex.whatsweb.server.utils;
+package com.lezurex.whatsweb.server.database.objects;
+
+import com.lezurex.whatsweb.server.database.enums.RowType;
 
 public class Row {
 
