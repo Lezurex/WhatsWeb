@@ -32,8 +32,6 @@ main {
 }
 
 #chat-header {
-    box-sizing: border-box;
-    width: 100%;
     padding: 0.5rem 1rem;
     background-color: gray;
 }
@@ -44,8 +42,6 @@ main {
 }
 
 #chats-header {
-    box-sizing: border-box;
-    width: 100%;
     padding: 0.5rem 1rem;
     background-color: gray;
 }
@@ -63,6 +59,7 @@ main {
 
 .chat-h1 {
     margin: 0;
+    font-size: 1.5rem;
 }
 
 .message {

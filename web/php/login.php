@@ -1,3 +1,3 @@
 <?php
 
-http_response_code(200);
+session_start();

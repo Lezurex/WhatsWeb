@@ -24,7 +24,7 @@ class ResponseHandler {
             switch (message.subcommand) {
                 case "get":
                     message['friends'].forEach((item) => {
-                        console.log(item);
+
                     })
             }
         }
