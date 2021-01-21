@@ -2,6 +2,7 @@ package com.lezurex.whatsweb.server.objects;
 
 import lombok.Getter;
 import lombok.Setter;
+import org.json.JSONObject;
 
 import java.util.UUID;
 
@@ -12,5 +13,16 @@ public class ChatElement {
     private String content;
     private double timestamp;
     private UUID uuid;
+
+    public ChatElement(User author, String content, double timestamp, UUID uuid) {
+        this.author = author;
+        this.content = content;
+        this.timestamp = timestamp;
+        this.uuid = uuid;
+    }
+
+    public JSONObject toJSONObject() {
+        return new JSONObject().put("author", this.author.getUuid()).put("content", this.content).put("timestamp", this.timestamp).put("uuid", this.uuid);
+    }
 
 }

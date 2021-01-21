@@ -1,5 +1,6 @@
 package com.lezurex.whatsweb.server.objects;
 
+import com.google.common.collect.Lists;
 import com.google.gson.Gson;
 import com.lezurex.whatsweb.server.Main;
 import com.lezurex.whatsweb.server.database.DatabaseAdapter;
@@ -14,7 +15,7 @@ public class Chat {
 
     public static Map<UUID, Chat> loadedChats = new HashMap<>();
 
-    private ArrayList<ChatElement> chatElements;
+    private List<ChatElement> chatElements;
     private UUID uuid;
 
     public static Chat loadChat(UUID uuid) {
@@ -41,9 +42,9 @@ public class Chat {
         this.uuid = uuid;
     }
 
-    public ArrayList<ChatElement> getChatElements() {
+    public List<ChatElement> getChatElements() {
         if (chatElements == null) {
-            chatElements = new ArrayList<>();
+            chatElements = Lists.newCopyOnWriteArrayList();
             DatabaseAdapter databaseAdapter = Main.databaseAdapter;
             String result = databaseAdapter.getStringFromTable("chats", "history", new Key("uuid", uuid.toString()));
             if (result == null || result.equals("")) {
@@ -67,9 +68,9 @@ public class Chat {
      * @param range Range counted backwards from lastUUID
      * @return Map with UUIDs and ChatElements
      */
-    public ArrayList<ChatElement> getChatElements(UUID lastUUID, int range) {
-        ArrayList<ChatElement> chatElements = this.getChatElements();
-        ArrayList<ChatElement> returnElements = new ArrayList<>();
+    public List<ChatElement> getChatElements(UUID lastUUID, int range) {
+        List<ChatElement> chatElements = this.getChatElements();
+        List<ChatElement> returnElements = Lists.newCopyOnWriteArrayList();
         for (int i = 0; i < chatElements.size(); i++) {
             ChatElement chatElement = chatElements.get(i);
             if (chatElement.getUuid() == lastUUID) {
@@ -93,6 +94,12 @@ public class Chat {
         }
         DatabaseAdapter databaseAdapter = Main.databaseAdapter;
         databaseAdapter.updateValue("chats", "history", jsonArray.toString(), new Key("uuid", uuid.toString()));
+    }
+
+    public JSONArray getChatElementsAsJSONArray(List<ChatElement> chatElements) {
+        JSONArray jsonArray = new JSONArray();
+        chatElements.forEach(chatElement -> jsonArray.put(chatElement.toJSONObject()));
+        return jsonArray;
     }
 
 }

@@ -59,6 +59,10 @@ public class User {
             return friends;
     }
 
+    public SimpleUser toSimpleUser() {
+        return new SimpleUser(this.uuid, this.username, this.lastSeen);
+    }
+
     public static Map<UUID, User> getLoadedUsers() {
         return loadedUsers;
     }
