@@ -19,7 +19,7 @@
         <input type="email" id="login-email">
         <label for="login-password">Passwort</label>
         <input type="password" id="login-password">
-        <input type = "submit" value="senden"/>
+        <button id="login-btn">Anmelden</button>
     <button onclick="togglePasswordReset()" >Passwort vergessen?</button><br>
     <button onclick="toggleRegistration()" >registriere dich hier</button>
     </div>
