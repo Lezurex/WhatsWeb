@@ -51,7 +51,13 @@ public class ChatCommand implements ServerCommand {
         if(range == -1) // -1 = get all messages
             response.put("messages", chat.getChatElementsAsJSONArray(chat.getChatElements()));
         else {
-            //TODO invalid range check
+            if(range > 100) {
+                client.getSocket().send(new ResponseBuilder(ResponseType.ERROR).
+                        setErrorTitle("Invalid range").
+                        setErrorDescription("The provided range is too large").
+                        setErrorCode("400").build());
+                return;
+            }
             response.put("messages", chat.getChatElementsAsJSONArray(chat.getChatElements(lastUUID, range)));
         }
         client.getSocket().send(new ResponseBuilder(ResponseType.RESPONSE).setResponseCommand("chat").setResponseData(response).build());
