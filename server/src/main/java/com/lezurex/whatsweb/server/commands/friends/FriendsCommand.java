@@ -9,7 +9,6 @@ import com.lezurex.whatsweb.server.utils.ResponseBuilder;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
-import java.util.ArrayList;
 import java.util.Map;
 
 public class FriendsCommand implements ServerCommand {
