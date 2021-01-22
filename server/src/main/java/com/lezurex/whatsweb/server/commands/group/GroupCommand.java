@@ -46,6 +46,7 @@ public class GroupCommand implements ServerCommand {
                 put("name", group.getName()).
                 put("admin", group.getAdmin().toSimpleUser().toJSONObject()).
                 put("members", members);
+        // TODO add chat uuid of chat object
 
         client.getSocket().send(new ResponseBuilder(ResponseType.RESPONSE).setResponseCommand("group").setResponseData(response).build());
     }

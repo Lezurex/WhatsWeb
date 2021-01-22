@@ -61,8 +61,3 @@ function togglePasswordReset() {
         x.style.display = "block";
     }
 }
-
-
-
-
-
