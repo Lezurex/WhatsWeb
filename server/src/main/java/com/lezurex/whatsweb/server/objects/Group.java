@@ -81,4 +81,12 @@ public class Group {
         return new SimpleGroup(this.name, lastMessage);
     }
 
+    public void addUser(UUID userUUID) {
+
+    }
+
+    public void removeUser(UUID userUUID) {
+
+    }
+
 }

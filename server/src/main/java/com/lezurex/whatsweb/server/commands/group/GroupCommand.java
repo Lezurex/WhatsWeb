@@ -29,6 +29,12 @@ public class GroupCommand implements ServerCommand {
             case "getGroups":
                 this.sendGroups(client);
                 break;
+            case "addUser":
+                this.addUser(client, UUID.fromString(data.getString("groupUUID")), UUID.fromString(data.getString("userUUID")));
+                break;
+            case "removeUser":
+                this.removeUser(client, UUID.fromString(data.getString("groupUUID")), UUID.fromString(data.getString("userUUID")));
+                break;
         }
     }
 
@@ -93,6 +99,50 @@ public class GroupCommand implements ServerCommand {
         });
 
         client.getSocket().send(new ResponseBuilder(ResponseType.RESPONSE).setResponseCommand("group").setResponseData(new JSONObject().put("subcommand", "getGroups").put("groups", jsonArray)).build());
+    }
+
+    private void addUser(Client client, UUID groupUUID, UUID userUUID) {
+        final Group group = Group.loadGroup(groupUUID);
+
+        if(group.getAdmin().getUuid() != client.getUser().getUuid()) {
+            client.getSocket().send(new ResponseBuilder(ResponseType.ERROR).
+                    setErrorTitle("No permission").
+                    setErrorDescription("You are not permitted to add a user").
+                    setErrorCode("403").build());
+            return;
+        }
+        if(group.getMembers().containsKey(userUUID)) {
+            client.getSocket().send(new ResponseBuilder(ResponseType.ERROR).
+                    setErrorTitle("User already in group").
+                    setErrorDescription("The user you are trying to add, is already in the group").
+                    setErrorCode("400").build());
+            return;
+        }
+
+        group.addUser(userUUID);
+        client.getSocket().send(new ResponseBuilder(ResponseType.RESPONSE).setResponseCommand("group").setResponseData(new JSONObject().put("subcommand", "addUser").put("status", "success")).build());
+    }
+
+    private void removeUser(Client client, UUID groupUUID, UUID userUUID) {
+        final Group group = Group.loadGroup(groupUUID);
+
+        if(group.getAdmin().getUuid() != client.getUser().getUuid()) {
+            client.getSocket().send(new ResponseBuilder(ResponseType.ERROR).
+                    setErrorTitle("No permission").
+                    setErrorDescription("You are not permitted to remove a user").
+                    setErrorCode("403").build());
+            return;
+        }
+        if(!group.getMembers().containsKey(userUUID)) {
+            client.getSocket().send(new ResponseBuilder(ResponseType.ERROR).
+                    setErrorTitle("User not in group").
+                    setErrorDescription("The user you are trying to remove, is not in the group").
+                    setErrorCode("400").build());
+            return;
+        }
+
+        group.removeUser(userUUID);
+        client.getSocket().send(new ResponseBuilder(ResponseType.RESPONSE).setResponseCommand("group").setResponseData(new JSONObject().put("subcommand", "removeUser").put("status", "success")).build());
     }
 
 }
