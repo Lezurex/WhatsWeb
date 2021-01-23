@@ -30,11 +30,11 @@ class ResponseHandler {
         }
         this.commandMap['group'] = function (message) {
             switch (message.subcommand) {
-                case "getInfo":
+                case "getByID":
                     let group = new Group(
                         message.members,
                         message.uuid,
-                        message.chatUuid, // TODO update when server updated
+                        message.chatuuid,
                         message.admin,
                         message.name
                     );
@@ -57,10 +57,19 @@ class CommandSender {
         send(JSON.stringify(obj));
     }
 
-    getGroup() {
+    getGroup(uuid) {
         this.sendRequest({
-            subcommand: ""
-        })
+            subcommand: "getByID",
+            uuid: uuid
+        }, "group");
+    }
+
+    getChat(uuid, range) {
+        this.sendRequest({
+            subcommand: "getChatWithRange",
+            uuid: uuid,
+            range: range
+        }, "chat")
     }
 
     getFriends() {
@@ -105,17 +114,19 @@ class Group {
         if (this.loadedGroups[uuid] !== undefined) {
             return this.loadedGroups[uuid];
         } else {
-            socket.send('{"data":{"command":"group","subcommand":"get"}}');
+            commandSender.getGroup(uuid);
         }
     }
 
-
-    constructor(members, uuid, chat, admin, name) {
+    constructor(members, uuid, chatUuid, admin, name) {
         this.members = members;
         this.uuid = uuid;
-        this.chat = chat;
         this.admin = admin;
         this.name = name;
+
+        this.chat = Chat.loadChat(chatUuid);
+
+        Group.loadedGroups.append(this.uuid, this);
     }
 }
 
@@ -131,6 +142,10 @@ class Chat {
         } else {
             socket.send('{"data":{"command":"chat","subcommand":"get"}}');
         }
+    }
+
+    constructor(uuid) {
+        this.uuid = uuid;
     }
 }
 

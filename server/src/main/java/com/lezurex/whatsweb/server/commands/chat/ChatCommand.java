@@ -23,7 +23,11 @@ public class ChatCommand implements ServerCommand {
                 this.sendChat(client, UUID.fromString(data.getString("uuid")), null, -1, "getChat");
                 break;
             case "getChatWithRange":
-                this.sendChat(client, UUID.fromString(data.getString("uuid")), UUID.fromString(data.getString("lastUUID")), data.getInt("range"), "getChatWithRange");
+                if (data.has("lastUUID"))
+                    this.sendChat(client, UUID.fromString(data.getString("uuid")), UUID.fromString(data.getString("lastUUID")), data.getInt("range"), "getChatWithRange");
+                else
+                    this.sendChat(client, UUID.fromString(data.getString("uuid")), null, data.getInt("range"), "getChatWithRange");
+
                 break;
         }
     }
@@ -49,7 +53,7 @@ public class ChatCommand implements ServerCommand {
 
         JSONObject response = new JSONObject();
 
-        if(range == -1) // -1 = get all messages
+        if (range == -1) // -1 = get all messages
             response.put("messages", chat.getChatElementsAsJSONArray(chat.getChatElements()));
         else {
             if(range > 100) {

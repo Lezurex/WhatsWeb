@@ -43,7 +43,7 @@ public class Group {
         if (!result) {
             databaseAdapter.insertIntoTable("chats", new Insert("uuid", uuid.toString()), new Insert("history", "[]"));
             databaseAdapter.insertIntoTable("groups", new Insert("uuid", uuid.toString()),
-                    new Insert("members", "[" + adminUUID.toString() + "]"),
+                    new Insert("members", "[\"" + adminUUID.toString() + "\"]"),
                     new Insert("admin", adminUUID.toString()),
                     new Insert("name", name));
         }

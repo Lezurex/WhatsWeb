@@ -11,16 +11,15 @@ const app = Vue.createApp({
     },
     methods: {
         loadChat(index) {
-            this.chatSidebarElements[index].selected = true;
             this.chatSidebarElements.forEach((element, i) => {
-                if (i !== index) {
-                    element.selected = false;
-                }
+                element.selected = false;
             });
+            this.chatSidebarElements[index].selected = true;
+
             let element = this.chatSidebarElements[index];
             this.currentChatElementId = index;
             if (element.type === "group") {
-
+                Group.loadGroup(element.uuid);
             }
         }
     },
