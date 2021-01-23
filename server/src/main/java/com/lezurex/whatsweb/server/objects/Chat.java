@@ -31,9 +31,7 @@ public class Chat {
     }
 
     public static Chat createChat() {
-        UUID uuid = UUID.randomUUID();
-        return null;
-        // TODO put chat in db
+        return new Chat(UUID.randomUUID());
     }
 
     private Chat(UUID uuid) {
