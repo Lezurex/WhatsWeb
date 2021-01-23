@@ -101,4 +101,14 @@ public class Group {
 
     }
 
+    @Override
+    public String toString() {
+        return "Group{" +
+                "members=" + members +
+                ", uuid=" + uuid +
+                ", chat=" + chat +
+                ", admin=" + admin +
+                ", name='" + name + '\'' +
+                '}';
+    }
 }

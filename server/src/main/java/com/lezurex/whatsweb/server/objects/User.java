@@ -87,4 +87,16 @@ public class User {
     public static Map<UUID, User> getLoadedUsers() {
         return loadedUsers;
     }
+
+    @Override
+    public String toString() {
+        return "User{" +
+                "uuid=" + uuid +
+                ", username='" + username + '\'' +
+                ", email='" + email + '\'' +
+                ", groups=" + groups +
+                ", friends=" + friends +
+                ", lastSeen=" + lastSeen +
+                '}';
+    }
 }

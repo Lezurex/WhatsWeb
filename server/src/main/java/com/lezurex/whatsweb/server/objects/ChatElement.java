@@ -25,4 +25,13 @@ public class ChatElement {
         return new JSONObject().put("author", this.author.getUuid()).put("content", this.content).put("timestamp", this.timestamp).put("uuid", this.uuid);
     }
 
+    @Override
+    public String toString() {
+        return "ChatElement{" +
+                "author=" + author +
+                ", content='" + content + '\'' +
+                ", timestamp=" + timestamp +
+                ", uuid=" + uuid +
+                '}';
+    }
 }

@@ -106,4 +106,11 @@ public class Chat {
         return jsonArray;
     }
 
+    @Override
+    public String toString() {
+        return "Chat{" +
+                "chatElements=" + chatElements +
+                ", uuid=" + uuid +
+                '}';
+    }
 }
