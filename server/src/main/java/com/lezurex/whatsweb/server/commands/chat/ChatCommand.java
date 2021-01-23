@@ -61,7 +61,7 @@ public class ChatCommand implements ServerCommand {
             }
             response.put("messages", chat.getChatElementsAsJSONArray(chat.getChatElements(lastUUID, range)));
         }
-        response.put("subcommand", subCommand);
+        response.put("subcommand", subCommand).put("uuid", uuid.toString());
         client.getSocket().send(new ResponseBuilder(ResponseType.RESPONSE).setResponseCommand("chat").setResponseData(response).build());
     }
 }

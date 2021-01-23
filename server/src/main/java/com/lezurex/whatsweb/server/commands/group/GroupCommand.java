@@ -80,7 +80,7 @@ public class GroupCommand implements ServerCommand {
             }
             response.put("messages", group.getChat().getChatElementsAsJSONArray(group.getChat().getChatElements(lastUUID, range)));
         }
-        response.put("subcommand", subCommand);
+        response.put("subcommand", subCommand).put("uuid", uuid.toString());
         client.getSocket().send(new ResponseBuilder(ResponseType.RESPONSE).setResponseCommand("group").setResponseData(response).build());
     }
 
