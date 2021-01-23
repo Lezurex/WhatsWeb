@@ -33,7 +33,7 @@ public class Group {
         }
     }
 
-    private static Group createGroup() {
+    public static Group createGroup() {
         return new Group(UUID.randomUUID());
     }
 
