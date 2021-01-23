@@ -151,7 +151,7 @@ class Group {
 
         this.chat = Chat.loadChat(chatUuid);
 
-        Group.loadedGroups.append(this.uuid, this);
+        Group.loadedGroups[this.uuid] = this;
     }
 }
 
@@ -165,7 +165,7 @@ class Chat {
         if (this.loadedChats[uuid] !== undefined) {
             return this.loadedChats[uuid];
         } else {
-            socket.send('{"data":{"command":"chat","subcommand":"get"}}');
+            commandSender.getChat(uuid, 100);
         }
     }
 

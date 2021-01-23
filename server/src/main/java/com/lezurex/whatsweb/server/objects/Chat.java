@@ -74,6 +74,7 @@ public class Chat {
         if (lastUUID == null) {
             lastUUID = chatElements.get(chatElements.size() - 1).getUuid();
         }
+
         List<ChatElement> returnElements = Lists.newCopyOnWriteArrayList();
         for (int i = 0; i < chatElements.size(); i++) {
             ChatElement chatElement = chatElements.get(i);

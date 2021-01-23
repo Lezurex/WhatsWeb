@@ -56,13 +56,15 @@ public class Group {
         ResultSet resultSet = databaseAdapter.getResultSet("groups", new Key("uuid", uuid.toString()));
 
         this.uuid = uuid;
+        this.chat = Chat.loadChat(uuid);
         this.members = new HashMap<>();
+
         String membersString = null;
+        String adminString = null;
 
         try {
             while (resultSet.next()) {
-                this.chat = Chat.loadChat(uuid);
-                this.admin = User.loadUser(UUID.fromString(resultSet.getString("admin")));
+                adminString = resultSet.getString("admin");
                 this.name = resultSet.getString("name");
                 membersString = resultSet.getString("members");
             }
@@ -70,12 +72,16 @@ public class Group {
             throwables.printStackTrace();
         }
 
+
         final JSONArray jsonArray = new JSONArray(membersString);
-        for(int i = 0; i<jsonArray.length(); i++) {
+        for (int i = 0; i<jsonArray.length(); i++) {
             final UUID memberUUID = (UUID.fromString(jsonArray.getString(i)));
-            members.put(memberUUID, User.loadUser(memberUUID));
+            User user = User.loadUser(memberUUID);
+            members.put(memberUUID, user);
+            System.out.println("New Group: " + members.toString());
         }
 
+        this.admin = User.loadUser(UUID.fromString(adminString));
         loadedGroups.put(uuid, this);
     }
 

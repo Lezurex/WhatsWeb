@@ -39,6 +39,7 @@ public class User {
         this.uuid = uuid;
         this.username = db.getStringFromTable("users", "username", new Key("uuid", uuid.toString()));
         this.email = db.getStringFromTable("users", "email", new Key("uuid", uuid.toString()));
+        loadGroups();
     }
 
     public Map<User, Chat> getFriends() {
@@ -62,21 +63,25 @@ public class User {
             return friends;
     }
 
-    public List<Group> getGroups() {
+    private void loadGroups() {
         if (this.groups != null) {
-            return this.groups;
+            return;
         }
         DatabaseAdapter databaseAdapter = Main.databaseAdapter;
         ResultSet resultSet = databaseAdapter.getResultSet("SELECT * FROM groups WHERE members LIKE '%" + uuid +"%'");
         groups = Lists.newCopyOnWriteArrayList();
+        List<String> uuids = Lists.newCopyOnWriteArrayList();
+
         try {
             while (resultSet.next()) {
-                groups.add(Group.loadGroup(UUID.fromString(resultSet.getString("uuid"))));
+                uuids.add(resultSet.getString("uuid"));
             }
         } catch (SQLException throwables) {
             throwables.printStackTrace();
         }
-        return this.groups;
+        for (String groupUUID : uuids) {
+            groups.add(Group.loadGroup(UUID.fromString(groupUUID)));
+        }
 
     }
 
