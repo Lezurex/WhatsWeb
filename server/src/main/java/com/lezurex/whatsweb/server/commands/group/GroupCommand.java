@@ -104,6 +104,13 @@ public class GroupCommand implements ServerCommand {
     private void addUser(Client client, UUID groupUUID, UUID userUUID) {
         final Group group = Group.loadGroup(groupUUID);
 
+        if(group == null) {
+            client.getSocket().send(new ResponseBuilder(ResponseType.ERROR).
+                    setErrorTitle("Group not found").
+                    setErrorDescription("The provided id isn't assigned to a group").
+                    setErrorCode("404").build());
+            return;
+        }
         if(group.getAdmin().getUuid() != client.getUser().getUuid()) {
             client.getSocket().send(new ResponseBuilder(ResponseType.ERROR).
                     setErrorTitle("No permission").
@@ -126,6 +133,13 @@ public class GroupCommand implements ServerCommand {
     private void removeUser(Client client, UUID groupUUID, UUID userUUID) {
         final Group group = Group.loadGroup(groupUUID);
 
+        if(group == null) {
+            client.getSocket().send(new ResponseBuilder(ResponseType.ERROR).
+                    setErrorTitle("Group not found").
+                    setErrorDescription("The provided id isn't assigned to a group").
+                    setErrorCode("404").build());
+            return;
+        }
         if(group.getAdmin().getUuid() != client.getUser().getUuid()) {
             client.getSocket().send(new ResponseBuilder(ResponseType.ERROR).
                     setErrorTitle("No permission").

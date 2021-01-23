@@ -6,6 +6,7 @@ import com.lezurex.whatsweb.server.database.DatabaseAdapter;
 import com.lezurex.whatsweb.server.database.objects.Insert;
 import com.lezurex.whatsweb.server.database.objects.Key;
 import lombok.Getter;
+import org.json.JSONArray;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -55,14 +56,24 @@ public class Group {
         ResultSet resultSet = databaseAdapter.getResultSet("groups", new Key("uuid", uuid.toString()));
 
         this.uuid = uuid;
+        this.members = new HashMap<>();
+        String membersString = null;
+
         try {
             while (resultSet.next()) {
                 this.chat = Chat.loadChat(uuid);
                 this.admin = User.loadUser(UUID.fromString(resultSet.getString("admin")));
                 this.name = resultSet.getString("name");
+                membersString = resultSet.getString("members");
             }
         } catch (SQLException throwables) {
             throwables.printStackTrace();
+        }
+
+        final JSONArray jsonArray = new JSONArray(membersString);
+        for(int i = 0; i<jsonArray.length(); i++) {
+            final UUID memberUUID = (UUID.fromString(jsonArray.getString(i)));
+            members.put(memberUUID, User.loadUser(memberUUID));
         }
 
         loadedGroups.put(uuid, this);
