@@ -8,6 +8,7 @@ import com.lezurex.whatsweb.server.utils.ResponseBuilder;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
+import java.util.List;
 import java.util.UUID;
 
 public class GroupCommand implements ServerCommand {
@@ -24,6 +25,9 @@ public class GroupCommand implements ServerCommand {
                 break;
             case "getChatWithRange":
                 this.sendChat(client, UUID.fromString(data.getString("uuid")), UUID.fromString(data.getString("lastUUID")), data.getInt("range"));
+                break;
+            case "getGroups":
+                this.sendGroups(client);
                 break;
         }
     }
@@ -76,6 +80,17 @@ public class GroupCommand implements ServerCommand {
             response.put("messages", group.getChat().getChatElementsAsJSONArray(group.getChat().getChatElements(lastUUID, range)));
         }
         client.getSocket().send(new ResponseBuilder(ResponseType.RESPONSE).setResponseCommand("group").setResponseData(response).build());
+    }
+
+    private void sendGroups(Client client) {
+        final List<Group> groups = client.getUser().getGroups();
+        JSONArray jsonArray = new JSONArray();
+
+        groups.forEach(group -> {
+            jsonArray.put(group.toSimpleGroup().toJSONObject());
+        });
+
+        client.getSocket().send(new ResponseBuilder(ResponseType.RESPONSE).setResponseCommand("group").setResponseData(new JSONObject().put("groups", jsonArray)).build());
     }
 
 }

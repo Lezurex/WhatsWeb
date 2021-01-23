@@ -48,4 +48,11 @@ public class Group {
         return list;
     }
 
+    public SimpleGroup toSimpleGroup() {
+        String lastMessage = null;
+        if(this.getChat().getChatElements().size() != 0)
+            lastMessage = this.getChat().getChatElements().get((this.getChat().getChatElements().size() - 1)).getContent();
+        return new SimpleGroup(this.name, lastMessage);
+    }
+
 }

@@ -14,15 +14,15 @@ public class User {
 
     private static final Map<UUID, User> loadedUsers = new HashMap<>();
 
-    private UUID uuid;
-    private String username;
-    private String email;
-    private ArrayList<Group> groups;
+    private final UUID uuid;
+    private final String username;
+    private final String email;
+    private List<Group> groups;
     private Map<User, Chat> friends;
     private double lastSeen;
 
     public static User loadUser(UUID uuid) {
-        if (loadedUsers.containsKey(uuid)) {
+        if(loadedUsers.containsKey(uuid)) {
             return loadedUsers.get(uuid);
         } else {
             User newUser = new User(uuid);
@@ -39,14 +39,14 @@ public class User {
     }
 
     public Map<User, Chat> getFriends() {
-        if (friends == null) {
+        if(friends == null) {
             DatabaseAdapter databaseAdapter = Main.databaseAdapter;
 
             friends = new HashMap<User, Chat>();
             String result = databaseAdapter.getStringFromTable("users", "friends", new Key("uuid", uuid.toString()));
-            if (result != null) {
+            if(result != null) {
                 JSONArray jsonArray = new JSONArray(result);
-                for (int i = 0; i < jsonArray.length(); i++) {
+                for(int i = 0; i < jsonArray.length(); i++) {
                     JSONObject friend = jsonArray.getJSONObject(i);
                     UUID friendUUID = UUID.fromString(friend.getString("uuid"));
                     UUID chatUUID = UUID.fromString(friend.getString("chatuuid"));
