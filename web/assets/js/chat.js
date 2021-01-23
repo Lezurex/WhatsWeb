@@ -8,10 +8,10 @@ class ResponseHandler {
     handleResponse(message) {
         let json = JSON.parse(message);
         let command;
-        if (Object.keys(json)[0] == "data") {
+        if (Object.keys(json)[0] === "data") {
             command = json.data["command"];
             this.commandMap[command](json.data);
-        } else if (Object.keys(json)[0] == "error") {
+        } else if (Object.keys(json)[0] === "error") {
             console.log(json.error);
         }
     }
@@ -38,6 +38,13 @@ class ResponseHandler {
                         message.admin,
                         message.name
                     );
+                    break;
+                case "getGroups":
+                    message['groups'].forEach(group => {
+                        let simpleGroup = new SimpleGroup(group.uuid, group.name, group.lastMessage);
+                        mountedApp.chatSidebarElements.push(new ChatSidebarElement(simpleGroup.name, simpleGroup.uuid, "group"));
+                    })
+
             }
         }
     }
@@ -55,6 +62,12 @@ class CommandSender {
             obj.data[key] = value;
         }
         send(JSON.stringify(obj));
+    }
+
+    getGroups() {
+        this.sendRequest({
+            subcommand: "getGroups"
+        }, "group");
     }
 
     getGroup(uuid) {
@@ -97,6 +110,18 @@ class SimpleUser {
         this.uuid = uuid;
         this.username = username;
         this.lastSeen = lastSeen;
+    }
+}
+
+class SimpleGroup {
+    uuid;
+    name;
+    lastMessage;
+
+    constructor(uuid, name, lastMessage) {
+        this.uuid = uuid;
+        this.name = name;
+        this.lastMessage = lastMessage;
     }
 }
 

@@ -1,10 +1,7 @@
 const app = Vue.createApp({
     data() {
         return {
-            chatSidebarElements: [
-                new ChatSidebarElement("Test123", "uid", "group"),
-                new ChatSidebarElement("Test1234", "uid", "private")
-            ],
+            chatSidebarElements: [],
             appTitle: "WhatsWeb",
             currentChatElementId: null
         }
@@ -25,5 +22,6 @@ const app = Vue.createApp({
     },
     mounted() {
         commandSender.getFriends();
+        commandSender.getGroups();
     }
 });

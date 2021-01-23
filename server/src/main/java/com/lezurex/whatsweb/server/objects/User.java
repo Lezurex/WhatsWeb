@@ -1,5 +1,6 @@
 package com.lezurex.whatsweb.server.objects;
 
+import com.google.common.collect.Lists;
 import com.lezurex.whatsweb.server.Main;
 import com.lezurex.whatsweb.server.database.DatabaseAdapter;
 import com.lezurex.whatsweb.server.database.objects.Key;
@@ -7,6 +8,8 @@ import lombok.Getter;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.*;
 
 @Getter
@@ -39,14 +42,14 @@ public class User {
     }
 
     public Map<User, Chat> getFriends() {
-        if(friends == null) {
+        if (friends == null) {
             DatabaseAdapter databaseAdapter = Main.databaseAdapter;
 
             friends = new HashMap<User, Chat>();
             String result = databaseAdapter.getStringFromTable("users", "friends", new Key("uuid", uuid.toString()));
-            if(result != null) {
+            if (result != null) {
                 JSONArray jsonArray = new JSONArray(result);
-                for(int i = 0; i < jsonArray.length(); i++) {
+                for (int i = 0; i < jsonArray.length(); i++) {
                     JSONObject friend = jsonArray.getJSONObject(i);
                     UUID friendUUID = UUID.fromString(friend.getString("uuid"));
                     UUID chatUUID = UUID.fromString(friend.getString("chatuuid"));
@@ -57,6 +60,24 @@ public class User {
 
         } else
             return friends;
+    }
+
+    public List<Group> getGroups() {
+        if (this.groups != null) {
+            return this.groups;
+        }
+        DatabaseAdapter databaseAdapter = Main.databaseAdapter;
+        ResultSet resultSet = databaseAdapter.getResultSet("SELECT * FROM groups WHERE members LIKE '%" + uuid +"%'");
+        groups = Lists.newCopyOnWriteArrayList();
+        try {
+            while (resultSet.next()) {
+                groups.add(Group.loadGroup(UUID.fromString(resultSet.getString("uuid"))));
+            }
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        }
+        return this.groups;
+
     }
 
     public SimpleUser toSimpleUser() {

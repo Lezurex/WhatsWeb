@@ -70,6 +70,7 @@ public class Group {
 
     public List<SimpleUser> getSimpleMembers() {
         List<SimpleUser> list = Lists.newCopyOnWriteArrayList();
+        System.out.println(members.toString());
         members.forEach((uuids, user) -> list.add(user.toSimpleUser()));
         return list;
     }
@@ -78,7 +79,7 @@ public class Group {
         String lastMessage = null;
         if(this.getChat().getChatElements().size() != 0)
             lastMessage = this.getChat().getChatElements().get((this.getChat().getChatElements().size() - 1)).getContent();
-        return new SimpleGroup(this.name, lastMessage);
+        return new SimpleGroup(this.name, lastMessage, uuid);
     }
 
     public void addUser(UUID userUUID) {
