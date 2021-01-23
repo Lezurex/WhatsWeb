@@ -66,7 +66,13 @@ public class GroupCommand implements ServerCommand {
         if(range == -1) // -1 = get all messages
             response.put("messages", group.getChat().getChatElementsAsJSONArray(group.getChat().getChatElements()));
         else {
-            //TODO invalid range check
+            if(range > 100) {
+                client.getSocket().send(new ResponseBuilder(ResponseType.ERROR).
+                        setErrorTitle("Invalid range").
+                        setErrorDescription("The provided range is too large").
+                        setErrorCode("400").build());
+                return;
+            }
             response.put("messages", group.getChat().getChatElementsAsJSONArray(group.getChat().getChatElements(lastUUID, range)));
         }
         client.getSocket().send(new ResponseBuilder(ResponseType.RESPONSE).setResponseCommand("group").setResponseData(response).build());
