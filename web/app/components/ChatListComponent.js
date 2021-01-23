@@ -1,16 +1,19 @@
 const sidebarComponent = app.component('chatlistcomponent', {
     name: "ChatListComponent",
     props: {
-        chatSidebarElements: {
+        chatsidebarelements: {
             type: Array
+        },
+        apptitle: {
+            type: String
         }
     },
     template: `<aside id="chats-list-panel">
         <div id="chats-header">
-            <h1 class="chat-h1">WhatsWeb</h1>
+            <h1 class="chat-h1">{{ apptitle }}</h1>
         </div>
         <ul id="chats-list">
-            <li v-for="listElement in chatSidebarElements">{{ listElement.name }}</li>
+            <li v-for="listElement in chatsidebarelements" :key="listElement.uuid">{{ listElement.name }}</li>
         </ul>
     </aside>`,
     data() {
@@ -21,8 +24,4 @@ const sidebarComponent = app.component('chatlistcomponent', {
     methods: {
 
     },
-    mounted() {
-        console.log(this.chatSidebarElements);
-    }
-
 })

@@ -2,13 +2,13 @@ const app = Vue.createApp({
     data() {
         return {
             chatSidebarElements: [
-                new ChatSidebarElement("Test1", "abc"),
-                new ChatSidebarElement("Test2", "abc")
+                new ChatSidebarElement("Test123", "uid"),
+                new ChatSidebarElement("Test1234", "uid")
             ],
-            name: "Lenny",
+            appTitle: "WhatsWeb"
         }
     },
     mounted() {
-        console.log(this.chatSidebarElements);
+        commandSender.getFriends();
     }
 });

@@ -25,7 +25,7 @@ public class LoginCommand implements ServerCommand {
                 JSONObject response = new JSONObject();
                 response.put("success", "true");
                 client.setUser(User.loadUser(UUID.fromString(data.getString("uuid"))));
-                client.getSocket().send(new ResponseBuilder(ResponseType.RESPONSE).setErrorTitle("login").setResponseData(response).build());
+                client.getSocket().send(new ResponseBuilder(ResponseType.RESPONSE).setErrorTitle("login").setResponseData(response).setResponseCommand("login").build());
 
             } else
                 client.getSocket().send(new ResponseBuilder(ResponseType.ERROR).

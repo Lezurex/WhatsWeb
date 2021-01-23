@@ -43,6 +43,32 @@ class ResponseHandler {
     }
 }
 
+class CommandSender {
+
+    sendRequest(data, command) {
+        let obj = {
+            data: {
+                command: command
+            }
+        };
+        for (const [key, value] of Object.entries(data)) {
+            obj.data[key] = value;
+        }
+        send(JSON.stringify(obj));
+    }
+
+    getFriends() {
+        this.sendRequest({
+            subcommand: "get"
+        }, "friends");
+    }
+
+    groups = {
+
+    }
+
+}
+
 class SimpleUser {
 
     uuid;
@@ -115,9 +141,9 @@ class ChatSidebarElement {
 
 socket = new WebSocket("ws://localhost:2121");
 let responseHandler = new ResponseHandler();
+let commandSender = new CommandSender();
 
-function send() {
-    let message = document.getElementById("message").value
+function send(message) {
     socket.send(message);
     console.log("OUT: " + message);
 }
