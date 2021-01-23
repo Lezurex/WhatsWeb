@@ -103,6 +103,16 @@ class ChatElement {
 
 }
 
+class ChatSidebarElement {
+    name;
+    uuid;
+
+    constructor(name, uuid) {
+        this.name = name;
+        this.uuid = uuid;
+    }
+}
+
 socket = new WebSocket("ws://localhost:2121");
 let responseHandler = new ResponseHandler();
 
