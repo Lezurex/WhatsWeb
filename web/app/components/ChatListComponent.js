@@ -13,7 +13,12 @@ const sidebarComponent = app.component('chatlistcomponent', {
             <h1 class="chat-h1">{{ apptitle }}</h1>
         </div>
         <ul id="chats-list">
-            <li v-for="listElement in chatsidebarelements" :key="listElement.uuid">{{ listElement.name }}</li>
+            <li 
+                v-for="(listElement, index) in chatsidebarelements" 
+                :key="listElement.uuid" 
+                @click="click(index)" 
+                :class="{ 'selected-element': listElement.selected }"
+            >{{ listElement.name }}</li>
         </ul>
     </aside>`,
     data() {
@@ -22,6 +27,8 @@ const sidebarComponent = app.component('chatlistcomponent', {
         }
     },
     methods: {
-
+        click(index) {
+            this.$emit("loadchat", index);
+        }
     },
 })

@@ -46,11 +46,11 @@ public class GroupCommand implements ServerCommand {
         group.getSimpleMembers().forEach(simpleUser -> members.put(simpleUser.toJSONObject()));
 
         JSONObject response = new JSONObject();
-        response.put("uuid", group.getUuid()).
-                put("name", group.getName()).
-                put("admin", group.getAdmin().toSimpleUser().toJSONObject()).
-                put("members", members);
-        // TODO add chat uuid of chat object
+        response.put("uuid", group.getUuid())
+                .put("name", group.getName())
+                .put("admin", group.getAdmin().toSimpleUser().toJSONObject())
+                .put("members", members)
+                .put("chatuuid", group.getChat().getUuid());
 
         client.getSocket().send(new ResponseBuilder(ResponseType.RESPONSE).setResponseCommand("group").setResponseData(response).build());
     }

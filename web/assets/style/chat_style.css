@@ -61,12 +61,25 @@ main {
     margin: 0;
     list-style: none;
     padding: 0;
+    overflow-y: scroll;
+    scroll-behavior: smooth;
+    height: auto;
 }
 
 #chats-list li {
     padding: 1rem;
-    border-bottom: 1px solid black;
+    border-bottom: 1px solid gray;
+    transition: .2s;
+}
 
+#chats-list li:hover {
+    cursor: pointer;
+    background: lightgray;
+    transition: .2s;
+}
+
+.selected-element {
+    background: lightgray;
 }
 
 .chat-h1 {

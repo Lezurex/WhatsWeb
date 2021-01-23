@@ -12,7 +12,9 @@
 <body>
 
 <main id="main">
-    <chatlistcomponent :apptitle="appTitle" :chatsidebarelements="chatSidebarElements"></chatlistcomponent>
+    <chatlistcomponent
+            :apptitle="appTitle"
+            :chatsidebarelements="chatSidebarElements" @loadchat="loadChat"></chatlistcomponent>
     <div id="chat-panel">
         <div id="chat-header">
             <h1 class="chat-h1">Gruppe 1</h1>

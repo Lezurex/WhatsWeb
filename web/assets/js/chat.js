@@ -57,10 +57,19 @@ class CommandSender {
         send(JSON.stringify(obj));
     }
 
+    getGroup() {
+        this.sendRequest({
+            subcommand: ""
+        })
+    }
+
     getFriends() {
         this.sendRequest({
             subcommand: "get"
         }, "friends");
+    }
+    friends = {
+
     }
 
     groups = {
@@ -132,10 +141,13 @@ class ChatElement {
 class ChatSidebarElement {
     name;
     uuid;
+    type;
+    selected = false;
 
-    constructor(name, uuid) {
+    constructor(name, uuid, type) {
         this.name = name;
         this.uuid = uuid;
+        this.type = type;
     }
 }
 

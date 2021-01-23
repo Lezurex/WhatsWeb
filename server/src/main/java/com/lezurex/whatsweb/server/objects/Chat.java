@@ -6,11 +6,13 @@ import com.lezurex.whatsweb.server.Main;
 import com.lezurex.whatsweb.server.database.DatabaseAdapter;
 import com.lezurex.whatsweb.server.database.objects.Insert;
 import com.lezurex.whatsweb.server.database.objects.Key;
+import lombok.Getter;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
 import java.util.*;
 
+@Getter
 public class Chat {
 
     public static Map<UUID, Chat> loadedChats = new HashMap<>();
@@ -31,6 +33,7 @@ public class Chat {
     public static Chat createChat() {
         UUID uuid = UUID.randomUUID();
         return null;
+        // TODO put chat in db
     }
 
     private Chat(UUID uuid) {
