@@ -21,10 +21,10 @@ public class GroupCommand implements ServerCommand {
                 this.sendGroupInfo(client, UUID.fromString(data.getString("uuid")));
                 break;
             case "getChat":
-                this.sendChat(client, UUID.fromString(data.getString("uuid")), null, -1);
+                this.sendChat(client, UUID.fromString(data.getString("uuid")), null, -1, "getChat");
                 break;
             case "getChatWithRange":
-                this.sendChat(client, UUID.fromString(data.getString("uuid")), UUID.fromString(data.getString("lastUUID")), data.getInt("range"));
+                this.sendChat(client, UUID.fromString(data.getString("uuid")), UUID.fromString(data.getString("lastUUID")), data.getInt("range"), "getChatWithRange");
                 break;
             case "getGroups":
                 this.sendGroups(client);
@@ -52,10 +52,11 @@ public class GroupCommand implements ServerCommand {
                 .put("members", members)
                 .put("chatuuid", group.getChat().getUuid());
 
+        response.put("subcommand", "getByID");
         client.getSocket().send(new ResponseBuilder(ResponseType.RESPONSE).setResponseCommand("group").setResponseData(response).build());
     }
 
-    private void sendChat(Client client, UUID uuid, UUID lastUUID, int range) {
+    private void sendChat(Client client, UUID uuid, UUID lastUUID, int range, String subCommand) {
         Group group = Group.loadGroup(uuid);
         if(group == null) {
             client.getSocket().send(new ResponseBuilder(ResponseType.ERROR).
@@ -79,6 +80,7 @@ public class GroupCommand implements ServerCommand {
             }
             response.put("messages", group.getChat().getChatElementsAsJSONArray(group.getChat().getChatElements(lastUUID, range)));
         }
+        response.put("subcommand", subCommand);
         client.getSocket().send(new ResponseBuilder(ResponseType.RESPONSE).setResponseCommand("group").setResponseData(response).build());
     }
 
@@ -90,7 +92,7 @@ public class GroupCommand implements ServerCommand {
             jsonArray.put(group.toSimpleGroup().toJSONObject());
         });
 
-        client.getSocket().send(new ResponseBuilder(ResponseType.RESPONSE).setResponseCommand("group").setResponseData(new JSONObject().put("groups", jsonArray)).build());
+        client.getSocket().send(new ResponseBuilder(ResponseType.RESPONSE).setResponseCommand("group").setResponseData(new JSONObject().put("subcommand", "getGroups").put("groups", jsonArray)).build());
     }
 
 }

@@ -33,6 +33,10 @@ public class Group {
         }
     }
 
+    private static Group createGroup() {
+        return new Group(UUID.randomUUID());
+    }
+
     private Group(UUID uuid) {
         DatabaseAdapter databaseAdapter = Main.databaseAdapter;
         boolean result = databaseAdapter.containsEntry("groups", new Key("uuid", uuid.toString()));

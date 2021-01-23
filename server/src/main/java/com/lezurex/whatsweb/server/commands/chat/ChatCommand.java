@@ -20,10 +20,10 @@ public class ChatCommand implements ServerCommand {
                 getInfo(client, data);
                 break;
             case "getChat":
-                this.sendChat(client, UUID.fromString(data.getString("uuid")), null, -1);
+                this.sendChat(client, UUID.fromString(data.getString("uuid")), null, -1, "getChat");
                 break;
             case "getChatWithRange":
-                this.sendChat(client, UUID.fromString(data.getString("uuid")), UUID.fromString(data.getString("lastUUID")), data.getInt("range"));
+                this.sendChat(client, UUID.fromString(data.getString("uuid")), UUID.fromString(data.getString("lastUUID")), data.getInt("range"), "getChatWithRange");
                 break;
         }
     }
@@ -33,10 +33,11 @@ public class ChatCommand implements ServerCommand {
         JSONObject response = new JSONObject();
 
 
+        response.put("subcommand", "getInfo");
         client.getSocket().send(new ResponseBuilder(ResponseType.RESPONSE).setResponseCommand("chat").setResponseData(response).build());
     }
 
-    private void sendChat(Client client, UUID uuid, UUID lastUUID, int range) {
+    private void sendChat(Client client, UUID uuid, UUID lastUUID, int range, String subCommand) {
         Chat chat = Chat.loadChat(uuid);
         if(chat == null) {
             client.getSocket().send(new ResponseBuilder(ResponseType.ERROR).
@@ -60,6 +61,7 @@ public class ChatCommand implements ServerCommand {
             }
             response.put("messages", chat.getChatElementsAsJSONArray(chat.getChatElements(lastUUID, range)));
         }
+        response.put("subcommand", subCommand);
         client.getSocket().send(new ResponseBuilder(ResponseType.RESPONSE).setResponseCommand("chat").setResponseData(response).build());
     }
 }
