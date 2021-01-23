@@ -40,7 +40,8 @@ public class Main {
         databaseAdapter.createTable("groups",
                 new Row("uuid", RowType.VARCHAR),
                 new Row("members", RowType.MEDIUMTEXT),
-                new Row("history", RowType.LONGTEXT));
+                new Row("admin", RowType.VARCHAR),
+                new Row("name", RowType.VARCHAR));
 
         databaseAdapter.createTable("chats",
                 new Row("uuid", RowType.VARCHAR),
