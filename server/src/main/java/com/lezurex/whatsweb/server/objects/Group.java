@@ -2,11 +2,15 @@ package com.lezurex.whatsweb.server.objects;
 
 import com.google.common.collect.Lists;
 import com.lezurex.whatsweb.server.Main;
+import com.lezurex.whatsweb.server.Server;
 import com.lezurex.whatsweb.server.database.DatabaseAdapter;
 import com.lezurex.whatsweb.server.database.objects.Insert;
 import com.lezurex.whatsweb.server.database.objects.Key;
+import com.lezurex.whatsweb.server.enums.ResponseType;
+import com.lezurex.whatsweb.server.utils.ResponseBuilder;
 import lombok.Getter;
 import org.json.JSONArray;
+import org.json.JSONObject;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -104,21 +108,25 @@ public class Group {
     }
 
     public void addUser(UUID userUUID) {
-
+        //TODO
     }
 
     public void removeUser(UUID userUUID) {
-
+        //TODO
     }
 
-    @Override
-    public String toString() {
-        return "Group{" +
-                "members=" + members +
-                ", uuid=" + uuid +
-                ", chat=" + chat +
-                ", admin=" + admin +
-                ", name='" + name + '\'' +
-                '}';
+    public void sendMessage(ChatElement chatElement) {
+        this.chat.addMessage(chatElement);
+
+        final JSONObject payload = new JSONObject();
+        payload.put("uuid", uuid.toString()).put("message", chatElement.toJSONObject());
+
+        this.members.forEach((memberUUID, user) -> {
+            Server.clients.forEach((webSocket, client) -> {
+                if(memberUUID.equals(client.getUser().getUuid())) {
+                    client.getSocket().send(new ResponseBuilder(ResponseType.RESPONSE).setResponseCommand("update").setResponseData(payload).build());
+                }
+            });
+        });
     }
 }

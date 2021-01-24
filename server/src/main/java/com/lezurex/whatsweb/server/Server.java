@@ -38,7 +38,7 @@ public class Server extends WebSocketServer {
 
     @Override
     public void onError(WebSocket webSocket, Exception e) {
-
+        e.printStackTrace();
     }
 
     @Override

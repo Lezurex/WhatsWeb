@@ -3,12 +3,14 @@ package com.lezurex.whatsweb.server.commands.chat;
 import com.lezurex.whatsweb.server.commands.ServerCommand;
 import com.lezurex.whatsweb.server.enums.ResponseType;
 import com.lezurex.whatsweb.server.objects.Chat;
+import com.lezurex.whatsweb.server.objects.ChatElement;
 import com.lezurex.whatsweb.server.objects.Client;
 import com.lezurex.whatsweb.server.objects.Group;
 import com.lezurex.whatsweb.server.utils.ResponseBuilder;
 import org.json.JSONObject;
 
 import java.util.UUID;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 public class ChatCommand implements ServerCommand {
 
@@ -27,7 +29,9 @@ public class ChatCommand implements ServerCommand {
                     this.sendChat(client, UUID.fromString(data.getString("uuid")), UUID.fromString(data.getString("lastUUID")), data.getInt("range"), "getChatWithRange");
                 else
                     this.sendChat(client, UUID.fromString(data.getString("uuid")), null, data.getInt("range"), "getChatWithRange");
-
+                break;
+            case "sendMessage":
+                this.sendMessage(client, UUID.fromString(data.getString("groupUUID")), data.getString("message"));
                 break;
         }
     }
@@ -68,4 +72,34 @@ public class ChatCommand implements ServerCommand {
         response.put("subcommand", subCommand).put("uuid", uuid.toString());
         client.getSocket().send(new ResponseBuilder(ResponseType.RESPONSE).setResponseCommand("chat").setResponseData(response).build());
     }
+
+    private void sendMessage(Client client, UUID chatUUID, String message) {
+        final Chat chat = Chat.loadChat(chatUUID);
+
+        if(chat == null) {
+            client.getSocket().send(new ResponseBuilder(ResponseType.ERROR).
+                    setErrorTitle("Chat not found").
+                    setErrorDescription("The provided id isn't assigned to a chat").
+                    setErrorCode("404").build());
+            return;
+        }
+
+        AtomicBoolean isPermitted = new AtomicBoolean(false);
+
+        client.getUser().getFriends().forEach((user, chats) -> {
+            if(chat.getUuid().equals(chats.getUuid())) isPermitted.set(true);
+        });
+
+        if(!isPermitted.get()) {
+            client.getSocket().send(new ResponseBuilder(ResponseType.ERROR).
+                    setErrorTitle("No permission").
+                    setErrorDescription("You are not permitted to send a message in that chat").
+                    setErrorCode("403").build());
+            return;
+        }
+
+        chat.addMessage(new ChatElement(client.getUser(), message, System.currentTimeMillis(), UUID.randomUUID()));
+        client.getSocket().send(new ResponseBuilder(ResponseType.RESPONSE).setResponseCommand("chat").setResponseData(new JSONObject().put("subcommand", "sendMessage").put("status", "success")).build());
+    }
+
 }

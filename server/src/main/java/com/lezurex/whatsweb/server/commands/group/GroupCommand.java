@@ -2,6 +2,7 @@ package com.lezurex.whatsweb.server.commands.group;
 
 import com.lezurex.whatsweb.server.commands.ServerCommand;
 import com.lezurex.whatsweb.server.enums.ResponseType;
+import com.lezurex.whatsweb.server.objects.ChatElement;
 import com.lezurex.whatsweb.server.objects.Client;
 import com.lezurex.whatsweb.server.objects.Group;
 import com.lezurex.whatsweb.server.objects.User;
@@ -11,6 +12,7 @@ import org.json.JSONObject;
 
 import java.util.List;
 import java.util.UUID;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 public class GroupCommand implements ServerCommand {
 
@@ -38,6 +40,9 @@ public class GroupCommand implements ServerCommand {
                 break;
             case "removeUser":
                 this.removeUser(client, UUID.fromString(data.getString("groupUUID")), UUID.fromString(data.getString("userUUID")));
+                break;
+            case "sendMessage":
+                this.sendMessage(client, UUID.fromString(data.getString("groupUUID")), data.getString("message"));
                 break;
         }
     }
@@ -161,6 +166,35 @@ public class GroupCommand implements ServerCommand {
 
         group.removeUser(userUUID);
         client.getSocket().send(new ResponseBuilder(ResponseType.RESPONSE).setResponseCommand("group").setResponseData(new JSONObject().put("subcommand", "removeUser").put("status", "success")).build());
+    }
+
+    private void sendMessage(Client client, UUID groupUUID, String message) {
+        final Group group = Group.loadGroup(groupUUID);
+
+        if(group == null) {
+            client.getSocket().send(new ResponseBuilder(ResponseType.ERROR).
+                    setErrorTitle("Group not found").
+                    setErrorDescription("The provided id isn't assigned to a group").
+                    setErrorCode("404").build());
+            return;
+        }
+
+        AtomicBoolean isInGroup = new AtomicBoolean(false);
+
+        group.getMembers().forEach((uuid, user) -> {
+            if(uuid.equals(client.getUser().getUuid())) isInGroup.set(true);
+        });
+
+        if(!isInGroup.get()) {
+            client.getSocket().send(new ResponseBuilder(ResponseType.ERROR).
+                    setErrorTitle("No permission").
+                    setErrorDescription("You are not permitted to send a message in that group").
+                    setErrorCode("403").build());
+            return;
+        }
+
+        group.sendMessage(new ChatElement(client.getUser(), message, System.currentTimeMillis(), UUID.randomUUID()));
+        client.getSocket().send(new ResponseBuilder(ResponseType.RESPONSE).setResponseCommand("group").setResponseData(new JSONObject().put("subcommand", "sendMessage").put("status", "success")).build());
     }
 
 }

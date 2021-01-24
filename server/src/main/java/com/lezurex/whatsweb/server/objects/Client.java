@@ -7,6 +7,8 @@ import lombok.Setter;
 import org.java_websocket.WebSocket;
 import org.json.JSONObject;
 
+import java.util.List;
+
 @Getter
 public class Client {
 
