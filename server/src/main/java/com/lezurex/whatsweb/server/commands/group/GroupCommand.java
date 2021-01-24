@@ -56,7 +56,7 @@ public class GroupCommand implements ServerCommand {
                     setErrorCode("404").build());
             return;
         }
-//        System.out.println(group.toString());
+
         JSONArray members = new JSONArray();
         group.getSimpleMembers().forEach(simpleUser -> members.put(simpleUser.toJSONObject()));
 
