@@ -20,8 +20,9 @@
         <label for="login-password">Passwort</label>
         <input type="password" id="login-password">
         <button id="login-btn">Anmelden</button>
-    <button onclick="togglePasswordReset()" >Passwort vergessen?</button><br>
-    <button onclick="toggleRegistration()" >registriere dich hier</button>
+        <button onclick="togglePasswordReset()">Passwort vergessen?</button>
+        <br>
+        <button onclick="toggleRegistration()">registriere dich hier</button>
     </div>
 </div>
 <div class="form-area" id="registration">
@@ -33,16 +34,16 @@
         <input type="password" id="registration-password">
         <label for="login-password">Passwort wiederholen</label>
         <input type="password" id="registration-password-repeat">
-        <input type = "submit" value="speichern" onclick="toggleRegistration()"/>
+        <input type="submit" value="speichern" onclick="toggleRegistration()"/>
     </div>
 </div>
-<div class = "form-area" id="forgot">
-    <div class = "form-card">
+<div class="form-area" id="forgot">
+    <div class="form-card">
         <h2>Passwort vergessen</h2>
         <p>Gib deine E-Mailadresse ein</p>
         <label for="login-email">E-Mail</label>
         <input type="email" id="forgotpassword-email">
-        <input type = "submit" value="senden" onclick="togglePasswordReset()"/>
+        <input type="submit" value="senden" onclick="togglePasswordReset()"/>
     </div>
 </div>
 <script src="assets/js/login.js"></script>
