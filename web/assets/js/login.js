@@ -6,15 +6,19 @@ class Login {
 
     static queryLogin() {
         $.ajax({
+            method: "post",
             url: "http://" + window.location.hostname + "/php/login.php",
             data: {
                 "email": this.email.val(),
                 "password": this.password.val()
             },
             success: function (data, textStatus, xhr) {
-                switch (xhr.status) {
-                    case 200:
+                switch (data) {
+                    case "200":
                         window.location.href = "http://" + window.location.hostname + "/app";
+                        break;
+                    default:
+                        alert("FALSCH!");
                 }
             },
             error: function (error) {
@@ -22,6 +26,15 @@ class Login {
             }
         })
     }
+}
+
+class Registration {
+    static email = $("#registration-email");
+    static username = $("#registration-name");
+    static password = $("#registration-password");
+    static passwordRepeat = $("#registration-password-repeat");
+    static btn = $("#registration-btn");
+
 }
 
 $(document).ready(function () {

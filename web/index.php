@@ -1,3 +1,14 @@
+<?php
+
+session_start();
+
+if (isset($_SESSION['uuid'])) {
+    header("Location: ./app");
+    exit();
+}
+
+?>
+
 <!DOCTYPE html>
 <html lang="de">
 <head>
@@ -28,13 +39,15 @@
 <div class="form-area" id="registration">
     <div class="form-card">
         <h2>Registrieren</h2>
-        <label for="login-email">E-Mail</label>
+        <label for="registration-name">Benutzername</label>
+        <input type="text" id="registration-name">
+        <label for="registration-email">E-Mail</label>
         <input type="email" id="registration-email">
-        <label for="login-password">Passwort</label>
+        <label for="registration-password">Passwort</label>
         <input type="password" id="registration-password">
-        <label for="login-password">Passwort wiederholen</label>
+        <label for="registration-password-repeat">Passwort wiederholen</label>
         <input type="password" id="registration-password-repeat">
-        <input type="submit" value="speichern" onclick="toggleRegistration()"/>
+        <button id="registration-btn">Registrieren</button>
     </div>
 </div>
 <div class="form-area" id="forgot">

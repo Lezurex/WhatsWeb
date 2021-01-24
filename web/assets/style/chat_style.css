@@ -122,3 +122,7 @@ main {
     margin: 0.25rem;
     font-size: 1rem;
 }
+
+#login-data {
+    display: none;
+}

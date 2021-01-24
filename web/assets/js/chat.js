@@ -279,13 +279,15 @@ function status() {
     console.log("Status: " + socket.readyState);
 }
 
+let data = JSON.parse(document.getElementById("login-data").innerHTML);
+
 socket.onopen = function (event) {
     console.log("Socket opened");
     let message = {
         "data": {
             "command": "login",
-            "uuid": "b0d43c22-6392-4237-8619-e75b5ed41f9f",
-            "token": "token"
+            "uuid": data.uuid,
+            "token": data.token
         }
     }
     socket.send(JSON.stringify(message));
@@ -295,28 +297,3 @@ socket.onopen = function (event) {
 socket.onmessage = function (event) {
     responseHandler.handleResponse(event.data);
 }
-
-function getCookie(cname) {
-    var name = cname + "=";
-    var decodedCookie = decodeURIComponent(document.cookie);
-    var ca = decodedCookie.split(';');
-    for(var i = 0; i <ca.length; i++) {
-        var c = ca[i];
-        while (c.charAt(0) == ' ') {
-            c = c.substring(1);
-        }
-        if (c.indexOf(name) == 0) {
-            return c.substring(name.length, c.length);
-        }
-    }
-    return "";
-}
-
-function setCookie(cname, cvalue, exdays) {
-    var d = new Date();
-    d.setTime(d.getTime() + (exdays*24*60*60*1000));
-    var expires = "expires="+ d.toUTCString();
-    document.cookie = cname + "=" + cvalue + ";" + expires + ";path=/";
-}
-
-setCookie("uuid", "b0d43c22-6392-4237-8619-e75b5ed41f9f")

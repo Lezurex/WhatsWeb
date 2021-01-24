@@ -5,7 +5,7 @@ const app = Vue.createApp({
             appTitle: "WhatsWeb",
             currentChatElementId: null,
             currentGroupObject: null,
-            uuid: getCookie("uuid"),
+            uuid: data.uuid,
             updateKey: 0,
             cachedusers: {}
         }
