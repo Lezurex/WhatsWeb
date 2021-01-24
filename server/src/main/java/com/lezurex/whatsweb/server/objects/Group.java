@@ -108,11 +108,22 @@ public class Group {
     }
 
     public void addUser(UUID userUUID) {
-        //TODO
+        final User user = User.loadUser(userUUID);
+        this.members.put(userUUID, user);
+
+        JSONArray jsonArray = new JSONArray();
+        this.members.forEach((uuids, users) -> jsonArray.put(uuids));
+
+        Main.databaseAdapter.updateValue("groups", "members", jsonArray.toString(), new Key("uuid", this.uuid.toString()));
     }
 
     public void removeUser(UUID userUUID) {
-        //TODO
+        this.members.remove(userUUID);
+
+        JSONArray jsonArray = new JSONArray();
+        this.members.forEach((uuids, users) -> jsonArray.put(uuids));
+
+        Main.databaseAdapter.updateValue("groups", "members", jsonArray.toString(), new Key("uuid", this.uuid.toString()));
     }
 
     public void sendMessage(ChatElement chatElement) {

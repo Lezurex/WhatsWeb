@@ -25,7 +25,7 @@ public class User {
     private double lastSeen;
 
     public static User loadUser(UUID uuid) {
-        if(loadedUsers.containsKey(uuid)) {
+        if (loadedUsers.containsKey(uuid)) {
             return loadedUsers.get(uuid);
         } else {
             return new User(uuid);

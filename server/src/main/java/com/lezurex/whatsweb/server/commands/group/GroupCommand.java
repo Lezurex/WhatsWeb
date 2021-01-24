@@ -1,6 +1,9 @@
 package com.lezurex.whatsweb.server.commands.group;
 
+import com.lezurex.whatsweb.server.Main;
 import com.lezurex.whatsweb.server.commands.ServerCommand;
+import com.lezurex.whatsweb.server.database.DatabaseAdapter;
+import com.lezurex.whatsweb.server.database.objects.Key;
 import com.lezurex.whatsweb.server.enums.ResponseType;
 import com.lezurex.whatsweb.server.objects.ChatElement;
 import com.lezurex.whatsweb.server.objects.Client;
@@ -36,10 +39,10 @@ public class GroupCommand implements ServerCommand {
                 this.sendGroups(client);
                 break;
             case "addUser":
-                this.addUser(client, UUID.fromString(data.getString("groupUUID")), UUID.fromString(data.getString("userUUID")));
+                this.addUser(client, UUID.fromString(data.getString("groupUUID")), data.getString("username"));
                 break;
             case "removeUser":
-                this.removeUser(client, UUID.fromString(data.getString("groupUUID")), UUID.fromString(data.getString("userUUID")));
+                this.removeUser(client, UUID.fromString(data.getString("groupUUID")), data.getString("username"));
                 break;
             case "sendMessage":
                 this.sendMessage(client, UUID.fromString(data.getString("groupUUID")), data.getString("message"));
@@ -113,7 +116,7 @@ public class GroupCommand implements ServerCommand {
         client.getSocket().send(new ResponseBuilder(ResponseType.RESPONSE).setResponseCommand("group").setResponseData(new JSONObject().put("subcommand", "getGroups").put("groups", jsonArray)).build());
     }
 
-    private void addUser(Client client, UUID groupUUID, UUID userUUID) {
+    private void addUser(Client client, UUID groupUUID, String username) {
         final Group group = Group.loadGroup(groupUUID);
 
         if(group == null) {
@@ -130,6 +133,18 @@ public class GroupCommand implements ServerCommand {
                     setErrorCode("403").build());
             return;
         }
+
+        final DatabaseAdapter databaseAdapter = Main.databaseAdapter;
+        if(!databaseAdapter.containsEntry("users", new Key("username", username))) {
+            client.getSocket().send(new ResponseBuilder(ResponseType.ERROR).
+                    setErrorTitle("User not found").
+                    setErrorDescription("The specified user could not be found").
+                    setErrorCode("404").build());
+            return;
+        }
+
+        final UUID userUUID = UUID.fromString(databaseAdapter.getStringFromTable("users", "uuid", new Key("username", username)));
+
         if(group.getMembers().containsKey(userUUID)) {
             client.getSocket().send(new ResponseBuilder(ResponseType.ERROR).
                     setErrorTitle("User already in group").
@@ -142,7 +157,7 @@ public class GroupCommand implements ServerCommand {
         client.getSocket().send(new ResponseBuilder(ResponseType.RESPONSE).setResponseCommand("group").setResponseData(new JSONObject().put("subcommand", "addUser").put("status", "success")).build());
     }
 
-    private void removeUser(Client client, UUID groupUUID, UUID userUUID) {
+    private void removeUser(Client client, UUID groupUUID, String username) {
         final Group group = Group.loadGroup(groupUUID);
 
         if(group == null) {
@@ -159,6 +174,18 @@ public class GroupCommand implements ServerCommand {
                     setErrorCode("403").build());
             return;
         }
+
+        final DatabaseAdapter databaseAdapter = Main.databaseAdapter;
+        if(!databaseAdapter.containsEntry("users", new Key("username", username))) {
+            client.getSocket().send(new ResponseBuilder(ResponseType.ERROR).
+                    setErrorTitle("User not found").
+                    setErrorDescription("The specified user could not be found").
+                    setErrorCode("404").build());
+            return;
+        }
+
+        final UUID userUUID = UUID.fromString(databaseAdapter.getStringFromTable("users", "uuid", new Key("username", username)));
+
         if(!group.getMembers().containsKey(userUUID)) {
             client.getSocket().send(new ResponseBuilder(ResponseType.ERROR).
                     setErrorTitle("User not in group").
