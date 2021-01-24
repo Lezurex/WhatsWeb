@@ -15,7 +15,10 @@
     <chatlistcomponent
             :apptitle="appTitle"
             :chatsidebarelements="chatSidebarElements" @loadchat="loadChat"></chatlistcomponent>
-    <chat-view :group="currentGroupObject" :uuid="uuid"></chat-view>
+    <chat-view
+            :group="currentGroupObject"
+            :uuid="uuid"
+            :key="updateKey" :cachedusers="cachedusers"></chat-view>
 </main>
 <script src="Main.js"></script>
 <script src="components/ChatListComponent.js"></script>

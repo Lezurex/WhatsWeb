@@ -1,10 +1,14 @@
 app.component("chat-view", {
+    name: "ChatView",
     props: {
         group: {
             type: Group
         },
         uuid: {
             type: String
+        },
+        cachedusers: {
+            type: Object
         }
     },
     template: `
@@ -14,7 +18,6 @@ app.component("chat-view", {
       </div>
       <div id="chat-content" v-html="chatContent">
       </div>
-      <div>{{group.chat}}</div>
       <div id="chat-input-area">
         <label for="chat-input">Nachricht:</label>
         <input type="text" id="chat-input">
@@ -32,32 +35,33 @@ app.component("chat-view", {
     },
     computed: {
         chatContent() {
-            console.log("Chat content")
-            if (this.group !== null) {
-                if (this.group.chat !== undefined) {
+            if (this.group instanceof Object) {
+                console.log(this.group)
+                if (this.group.chat instanceof Object) {
                     console.log("Group chat not undefined")
                     if (this.group.chat.messages !== null) {
+                        let chat = this.group.chat;
                         console.log("Group chat messages not null")
                         let chatContent = "";
                         chat.messages.forEach(messageElement => {
-                            if (messageElement.author !== this.uuid) {
-                                let user = SimpleUser.loadUser(messageElement.author);
+                            let user = messageElement.author;
+
+                            if (messageElement.author.uuid !== this.uuid) {
                                 chatContent += `<div class="message message-left">
                                     <div>
                                         <h1>` + user.username + `</h1>
-                                    </div>
-                                    <div>
+                                        <div>
                                         ` + messageElement.content + `
+                                    </div>
                                     </div>
                                 </div>`
                             } else {
-                                let user = SimpleUser.loadUser(messageElement.author);
                                 chatContent += `<div class="message message-right">
                                     <div>
                                         <h1>` + user.username + `</h1>
-                                    </div>
-                                    <div>
+                                        <div>
                                         ` + messageElement.content + `
+                                    </div>
                                     </div>
                                 </div>`
                             }
@@ -68,5 +72,8 @@ app.component("chat-view", {
             }
             return "<span style='display: block; padding-top: 5rem; text-align: center; width: 100%;'>Keine Nachrichten</span>"
         }
+    },
+    mounted() {
+
     }
 })

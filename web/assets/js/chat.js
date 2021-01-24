@@ -69,15 +69,18 @@ class ResponseHandler {
         }
         this.commandMap['user'] = function (message) {
             switch (message.subcommand) {
-                case "get":
+                case "getByID":
                     let simpleUser = new SimpleUser(message.uuid, message.username, message.lastSeen);
                     SimpleUser.loadedUsers[simpleUser.uuid] = simpleUser;
+                    mountedApp.cachedusers = SimpleUser.loadedUsers;
+                    mountedApp.updateKey++;
             }
         }
         this.commandMap['update'] = function (message) {
             let group = Group.loadGroup(message.uuid);
             group.chat.addElement(new ChatElement(message.message.author, message.message.content, message.message.timestamp, message.message.uuid));
             mountedApp.currentGroupObject = group;
+            mountedApp.updateKey++;
         }
     }
 }
@@ -123,9 +126,10 @@ class CommandSender {
         }, "friends");
     }
 
-    getUser() {
+    getUser(uuid) {
         this.sendRequest({
-            subcommand: "get"
+            subcommand: "getByID",
+            uuid: uuid
         }, "user");
     }
 
@@ -145,12 +149,15 @@ class SimpleUser {
     static loadedUsers = {};
 
     uuid;
-    username;
+    username = "Lädt";
     lastSeen;
 
     constructor(uuid, username, lastSeen) {
         this.uuid = uuid;
         this.username = username;
+        if (username === undefined) {
+            username = "Lädt..."
+        }
         this.lastSeen = lastSeen;
     }
 
@@ -228,6 +235,7 @@ class Chat {
     addElement(chatElement) {
         this.messages.push(chatElement);
         mountedApp.currentGroupObject = Group.loadGroup(this.uuid);
+        mountedApp.updateKey++;
     }
 }
 
@@ -238,7 +246,7 @@ class ChatElement {
     uuid;
 
     constructor(author, content, timestamp, uuid) {
-        this.author = new SimpleUser();
+        this.author = author;
         this.content = content;
         this.timestamp = timestamp;
         this.uuid = uuid;
@@ -311,4 +319,4 @@ function setCookie(cname, cvalue, exdays) {
     document.cookie = cname + "=" + cvalue + ";" + expires + ";path=/";
 }
 
-setCookie("uuid", "b0d43c22-6392-4237-8619-e75b5ed41f9f", 0)
+setCookie("uuid", "b0d43c22-6392-4237-8619-e75b5ed41f9f")

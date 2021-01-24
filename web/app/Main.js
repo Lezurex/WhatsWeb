@@ -5,6 +5,9 @@ const app = Vue.createApp({
             appTitle: "WhatsWeb",
             currentChatElementId: null,
             currentGroupObject: null,
+            uuid: getCookie("uuid"),
+            updateKey: 0,
+            cachedusers: {}
         }
     },
     methods: {
@@ -22,9 +25,7 @@ const app = Vue.createApp({
         }
     },
     computed: {
-        uuid() {
-            return getCookie("uuid");
-        }
+
     },
     mounted() {
         commandSender.getFriends();

@@ -100,7 +100,6 @@ public class Chat {
         chatElements.add(chatElement);
         JSONArray jsonArray = new JSONArray();
         for (ChatElement element : getChatElements()) {
-            System.out.println(element.getContent());
             jsonArray.put(element.toJSONObject());
         }
         DatabaseAdapter databaseAdapter = Main.databaseAdapter;

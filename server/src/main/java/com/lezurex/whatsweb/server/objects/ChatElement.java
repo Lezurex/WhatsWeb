@@ -29,7 +29,11 @@ public class ChatElement {
     }
 
     public JSONObject toJSONObject() {
-        return new JSONObject().put("author", this.author.getUuid()).put("content", this.content).put("timestamp", this.timestamp).put("uuid", this.uuid);
+        return new JSONObject()
+                .put("author", this.author.toSimpleUser().toJSONObject())
+                .put("content", this.content)
+                .put("timestamp", this.timestamp)
+                .put("uuid", this.uuid);
     }
 
     @Override

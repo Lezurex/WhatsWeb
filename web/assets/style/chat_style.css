@@ -103,6 +103,13 @@ main {
     margin: 1rem;
 }
 
+.message div div {
+    border-radius: 0;
+    box-shadow: none;
+    padding: 0;
+    margin: .25rem;
+}
+
 .message-left div {
     background-color: dodgerblue;
 }
