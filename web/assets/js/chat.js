@@ -74,6 +74,11 @@ class ResponseHandler {
                     SimpleUser.loadedUsers[simpleUser.uuid] = simpleUser;
             }
         }
+        this.commandMap['update'] = function (message) {
+            let group = Group.loadGroup(message.uuid);
+            group.chat.addElement(new ChatElement(message.author, message.content, message.timestamp, message.uuid));
+            mountedApp.currentGroupObject = group;
+        }
     }
 }
 
@@ -122,6 +127,14 @@ class CommandSender {
         this.sendRequest({
             subcommand: "get"
         }, "user");
+    }
+
+    sendMessage(groupUUID, message) {
+        this.sendRequest({
+            groupUUID: groupUUID,
+            message: message,
+            subcommand: "sendMessage"
+        }, "group");
     }
 
 

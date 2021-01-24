@@ -171,7 +171,7 @@ public class GroupCommand implements ServerCommand {
     private void sendMessage(Client client, UUID groupUUID, String message) {
         final Group group = Group.loadGroup(groupUUID);
 
-        if(group == null) {
+        if (group == null) {
             client.getSocket().send(new ResponseBuilder(ResponseType.ERROR).
                     setErrorTitle("Group not found").
                     setErrorDescription("The provided id isn't assigned to a group").
