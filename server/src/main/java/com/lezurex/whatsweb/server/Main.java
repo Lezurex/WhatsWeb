@@ -4,10 +4,7 @@ import com.lezurex.whatsweb.server.database.Database;
 import com.lezurex.whatsweb.server.database.DatabaseAdapter;
 import com.lezurex.whatsweb.server.database.objects.Row;
 import com.lezurex.whatsweb.server.database.enums.RowType;
-import com.lezurex.whatsweb.server.objects.Group;
-
 import java.io.IOException;
-import java.util.UUID;
 
 public class Main {
 

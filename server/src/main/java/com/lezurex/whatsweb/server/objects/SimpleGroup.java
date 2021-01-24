@@ -21,6 +21,7 @@ public class SimpleGroup {
         this.name = name;
         this.lastMessage = lastMessage;
         this.uuid = uuid;
+        ;
     }
 
     public JSONObject toJSONObject() {

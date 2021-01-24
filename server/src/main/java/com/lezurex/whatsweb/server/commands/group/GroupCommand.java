@@ -69,6 +69,7 @@ public class GroupCommand implements ServerCommand {
 
         response.put("subcommand", "getByID");
         client.getSocket().send(new ResponseBuilder(ResponseType.RESPONSE).setResponseCommand("group").setResponseData(response).build());
+        ;
     }
 
     private void sendChat(Client client, UUID uuid, UUID lastUUID, int range, String subCommand) {
@@ -97,9 +98,11 @@ public class GroupCommand implements ServerCommand {
         }
         response.put("subcommand", subCommand).put("uuid", uuid.toString());
         client.getSocket().send(new ResponseBuilder(ResponseType.RESPONSE).setResponseCommand("group").setResponseData(response).build());
+        ;
     }
 
     private void sendGroups(Client client) {
+        ;
         final List<Group> groups = client.getUser().getGroups();
         JSONArray jsonArray = new JSONArray();
 

@@ -61,5 +61,4 @@ public class ResponseBuilder {
         }
         return jsonObject.toString();
     }
-
 }
