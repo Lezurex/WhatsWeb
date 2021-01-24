@@ -41,6 +41,7 @@ public class Chat {
             databaseAdapter.insertIntoTable("chats", new Insert("uuid", uuid.toString()), new Insert("history", "[]"));
         loadedChats.put(uuid, this);
         this.uuid = uuid;
+        getChatElements();
     }
 
     public List<ChatElement> getChatElements() {
@@ -54,8 +55,7 @@ public class Chat {
             }
             JSONArray items = new JSONArray(result);
             for (int i = 0; i < items.length(); i++) {
-                Gson gson = new Gson();
-                ChatElement chatElement = gson.fromJson(items.getJSONObject(i).toString(), ChatElement.class);
+                ChatElement chatElement = new ChatElement(items.getJSONObject(i));
                 chatElements.add(chatElement);
             }
 
@@ -65,8 +65,9 @@ public class Chat {
 
     /**
      * Gets a range of {@link ChatElement ChatElements} from the last UUID
+     *
      * @param lastUUID Last UUID of the list
-     * @param range Range counted backwards from lastUUID
+     * @param range    Range counted backwards from lastUUID
      * @return Map with UUIDs and ChatElements
      */
     public List<ChatElement> getChatElements(UUID lastUUID, int range) {
@@ -74,31 +75,33 @@ public class Chat {
         if (chatElements.size() == 0) {
             return Lists.newCopyOnWriteArrayList();
         }
-        if (lastUUID == null) {
-            lastUUID = chatElements.get(chatElements.size()).getUuid();
+        if (chatElements.size() <= range) {
+            range = chatElements.size();
         }
-
+        if (lastUUID == null) {
+            lastUUID = chatElements.get(chatElements.size() - 1).getUuid();
+        }
         List<ChatElement> returnElements = Lists.newCopyOnWriteArrayList();
         for (int i = 0; i < chatElements.size(); i++) {
             ChatElement chatElement = chatElements.get(i);
             if (chatElement.getUuid() == lastUUID) {
                 int lastIndex = i;
-                for (int j = lastIndex; j > (chatElements.size() - range) ; j--) {
+                for (int j = lastIndex; j >= (chatElements.size() - range); j--) {
                     returnElements.add(chatElements.get(j));
                 }
                 Collections.reverse(returnElements);
             }
         }
+
         return returnElements;
     }
 
     public void addMessage(ChatElement chatElement) {
         chatElements.add(chatElement);
         JSONArray jsonArray = new JSONArray();
-        for (ChatElement element : chatElements) {
-            Gson gson = new Gson();
-            String jsonString = gson.toJson(element);
-            jsonArray.put(new JSONObject(jsonString));
+        for (ChatElement element : getChatElements()) {
+            System.out.println(element.getContent());
+            jsonArray.put(element.toJSONObject());
         }
         DatabaseAdapter databaseAdapter = Main.databaseAdapter;
         databaseAdapter.updateValue("chats", "history", jsonArray.toString(), new Key("uuid", uuid.toString()));

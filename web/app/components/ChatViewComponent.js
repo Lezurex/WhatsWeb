@@ -12,9 +12,9 @@ app.component("chat-view", {
       <div id="chat-header">
         <h1 class="chat-h1">{{ group.name }}</h1>
       </div>
-      <div id="chat-content">
-        {{ chatContent }}
+      <div id="chat-content" v-html="chatContent">
       </div>
+      <div>{{group.chat}}</div>
       <div id="chat-input-area">
         <label for="chat-input">Nachricht:</label>
         <input type="text" id="chat-input">
@@ -32,9 +32,12 @@ app.component("chat-view", {
     },
     computed: {
         chatContent() {
+            console.log("Chat content")
             if (this.group !== null) {
                 if (this.group.chat !== undefined) {
+                    console.log("Group chat not undefined")
                     if (this.group.chat.messages !== null) {
+                        console.log("Group chat messages not null")
                         let chatContent = "";
                         chat.messages.forEach(messageElement => {
                             if (messageElement.author !== this.uuid) {
@@ -59,9 +62,11 @@ app.component("chat-view", {
                                 </div>`
                             }
                         });
+                        return chatContent;
                     }
                 }
             }
+            return "<span style='display: block; padding-top: 5rem; text-align: center; width: 100%;'>Keine Nachrichten</span>"
         }
     }
 })

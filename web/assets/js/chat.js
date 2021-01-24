@@ -76,7 +76,7 @@ class ResponseHandler {
         }
         this.commandMap['update'] = function (message) {
             let group = Group.loadGroup(message.uuid);
-            group.chat.addElement(new ChatElement(message.author, message.content, message.timestamp, message.uuid));
+            group.chat.addElement(new ChatElement(message.message.author, message.message.content, message.message.timestamp, message.message.uuid));
             mountedApp.currentGroupObject = group;
         }
     }
@@ -227,6 +227,7 @@ class Chat {
 
     addElement(chatElement) {
         this.messages.push(chatElement);
+        mountedApp.currentGroupObject = Group.loadGroup(this.uuid);
     }
 }
 
