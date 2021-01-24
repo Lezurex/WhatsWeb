@@ -28,18 +28,18 @@ public class User {
         if(loadedUsers.containsKey(uuid)) {
             return loadedUsers.get(uuid);
         } else {
-            User newUser = new User(uuid);
-            loadedUsers.put(uuid, newUser);
-            return newUser;
+            return new User(uuid);
         }
     }
 
     private User(UUID uuid) {
         DatabaseAdapter db = Main.databaseAdapter;
+        loadedUsers.put(uuid, this);
+
         this.uuid = uuid;
         this.username = db.getStringFromTable("users", "username", new Key("uuid", uuid.toString()));
         this.email = db.getStringFromTable("users", "email", new Key("uuid", uuid.toString()));
-        loadGroups();
+        new Thread(this::loadGroups).start();
     }
 
     public Map<User, Chat> getFriends() {

@@ -71,8 +71,11 @@ public class Chat {
      */
     public List<ChatElement> getChatElements(UUID lastUUID, int range) {
         List<ChatElement> chatElements = this.getChatElements();
+        if (chatElements.size() == 0) {
+            return Lists.newCopyOnWriteArrayList();
+        }
         if (lastUUID == null) {
-            lastUUID = chatElements.get(chatElements.size() - 1).getUuid();
+            lastUUID = chatElements.get(chatElements.size()).getUuid();
         }
 
         List<ChatElement> returnElements = Lists.newCopyOnWriteArrayList();

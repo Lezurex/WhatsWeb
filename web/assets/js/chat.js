@@ -47,6 +47,12 @@ class ResponseHandler {
 
             }
         }
+        this.commandMap['chat'] = function (message) {
+            switch (message.subcommand) {
+                case "getChatWithRange":
+                    let chat = Chat.loadChat(message.uuid).
+            }
+        }
     }
 }
 
@@ -175,7 +181,10 @@ class Chat {
 }
 
 class ChatElement {
-
+    author;
+    content;
+    timestamp;
+    uuid;
 }
 
 class ChatSidebarElement {

@@ -23,7 +23,7 @@ public class Group {
     private Map<UUID, User> members;
     private final UUID uuid;
     private Chat chat;
-    private User admin;
+    private UUID admin;
     private String name;
 
     public static Group loadGroup(UUID uuid) {
@@ -55,6 +55,8 @@ public class Group {
         DatabaseAdapter databaseAdapter = Main.databaseAdapter;
         ResultSet resultSet = databaseAdapter.getResultSet("groups", new Key("uuid", uuid.toString()));
 
+        loadedGroups.put(uuid, this);
+
         this.uuid = uuid;
         this.chat = Chat.loadChat(uuid);
         this.members = new HashMap<>();
@@ -72,22 +74,24 @@ public class Group {
             throwables.printStackTrace();
         }
 
+        assert adminString != null;
+        admin = UUID.fromString(adminString);
 
+        assert membersString != null;
         final JSONArray jsonArray = new JSONArray(membersString);
-        for (int i = 0; i<jsonArray.length(); i++) {
-            final UUID memberUUID = (UUID.fromString(jsonArray.getString(i)));
-            User user = User.loadUser(memberUUID);
-            members.put(memberUUID, user);
-            System.out.println("New Group: " + members.toString());
-        }
 
-        this.admin = User.loadUser(UUID.fromString(adminString));
-        loadedGroups.put(uuid, this);
+        new Thread(() -> {
+            for (int i = 0; i < jsonArray.length(); i++) {
+                final UUID memberUUID = (UUID.fromString(jsonArray.getString(i)));
+                User user = User.loadUser(memberUUID);
+                members.put(memberUUID, user);
+            }
+        }).start();
+
     }
 
     public List<SimpleUser> getSimpleMembers() {
         List<SimpleUser> list = Lists.newCopyOnWriteArrayList();
-        System.out.println(members.toString());
         members.forEach((uuids, user) -> list.add(user.toSimpleUser()));
         return list;
     }

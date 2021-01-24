@@ -4,6 +4,7 @@ import com.lezurex.whatsweb.server.commands.ServerCommand;
 import com.lezurex.whatsweb.server.enums.ResponseType;
 import com.lezurex.whatsweb.server.objects.Client;
 import com.lezurex.whatsweb.server.objects.Group;
+import com.lezurex.whatsweb.server.objects.User;
 import com.lezurex.whatsweb.server.utils.ResponseBuilder;
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -43,21 +44,21 @@ public class GroupCommand implements ServerCommand {
 
     private void sendGroupInfo(Client client, UUID uuid) {
         Group group = Group.loadGroup(uuid);
-        if(group == null) {
+        if (group == null) {
             client.getSocket().send(new ResponseBuilder(ResponseType.ERROR).
                     setErrorTitle("Group not found").
                     setErrorDescription("The provided id isn't assigned to a group").
                     setErrorCode("404").build());
             return;
         }
-
+//        System.out.println(group.toString());
         JSONArray members = new JSONArray();
         group.getSimpleMembers().forEach(simpleUser -> members.put(simpleUser.toJSONObject()));
 
         JSONObject response = new JSONObject();
         response.put("uuid", group.getUuid())
                 .put("name", group.getName())
-                .put("admin", group.getAdmin().toSimpleUser().toJSONObject())
+                .put("admin", User.loadUser(group.getAdmin()).toSimpleUser().toJSONObject())
                 .put("members", members)
                 .put("chatuuid", group.getChat().getUuid());
 
@@ -114,7 +115,7 @@ public class GroupCommand implements ServerCommand {
                     setErrorCode("404").build());
             return;
         }
-        if(group.getAdmin().getUuid() != client.getUser().getUuid()) {
+        if(group.getAdmin() != client.getUser().getUuid()) {
             client.getSocket().send(new ResponseBuilder(ResponseType.ERROR).
                     setErrorTitle("No permission").
                     setErrorDescription("You are not permitted to add a user").
@@ -143,7 +144,7 @@ public class GroupCommand implements ServerCommand {
                     setErrorCode("404").build());
             return;
         }
-        if(group.getAdmin().getUuid() != client.getUser().getUuid()) {
+        if(group.getAdmin() != client.getUser().getUuid()) {
             client.getSocket().send(new ResponseBuilder(ResponseType.ERROR).
                     setErrorTitle("No permission").
                     setErrorDescription("You are not permitted to remove a user").
