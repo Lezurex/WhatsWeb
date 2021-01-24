@@ -21,6 +21,13 @@ public class ChatElement {
         this.uuid = uuid;
     }
 
+    public ChatElement(JSONObject object) {
+        this.author = User.loadUser(UUID.fromString(object.getString("author")));
+        this.uuid = UUID.fromString(object.getString("uuid"));
+        this.content = object.getString("content");
+        this.timestamp = object.getDouble("timestamp");
+    }
+
     public JSONObject toJSONObject() {
         return new JSONObject().put("author", this.author.getUuid()).put("content", this.content).put("timestamp", this.timestamp).put("uuid", this.uuid);
     }
