@@ -38,6 +38,7 @@ class ResponseHandler {
                         message.admin,
                         message.name
                     );
+                    mountedApp.currentGroupObject = group;
                     break;
                 case "getGroups":
                     message['groups'].forEach(group => {
@@ -50,7 +51,27 @@ class ResponseHandler {
         this.commandMap['chat'] = function (message) {
             switch (message.subcommand) {
                 case "getChatWithRange":
-                    let chat = Chat.loadChat(message.uuid).
+                    let chat = new Chat(message.uuid)
+                    message.messages.forEach(messageElement => {
+                        let chatElement = new ChatElement(
+                            messageElement.author,
+                            messageElement.content,
+                            messageElement.timestamp,
+                            messageElement.uuid
+                        );
+                        chat.addElement(chatElement);
+                    });
+                    let group = Group.loadGroup(chat.uuid);
+                    group.chat = chat;
+                    mountedApp.currentGroupObject = group;
+                    break;
+            }
+        }
+        this.commandMap['user'] = function (message) {
+            switch (message.subcommand) {
+                case "get":
+                    let simpleUser = new SimpleUser(message.uuid, message.username, message.lastSeen);
+                    SimpleUser.loadedUsers[simpleUser.uuid] = simpleUser;
             }
         }
     }
@@ -96,17 +117,19 @@ class CommandSender {
             subcommand: "get"
         }, "friends");
     }
-    friends = {
 
+    getUser() {
+        this.sendRequest({
+            subcommand: "get"
+        }, "user");
     }
 
-    groups = {
-
-    }
 
 }
 
 class SimpleUser {
+
+    static loadedUsers = {};
 
     uuid;
     username;
@@ -116,6 +139,14 @@ class SimpleUser {
         this.uuid = uuid;
         this.username = username;
         this.lastSeen = lastSeen;
+    }
+
+    static loadUser(uuid) {
+        if (this.loadedUsers[uuid] !== undefined) {
+            return this.loadedUsers[uuid];
+        } else {
+            commandSender.getUser(uuid);
+        }
     }
 }
 
@@ -176,7 +207,13 @@ class Chat {
     }
 
     constructor(uuid) {
+        Chat.loadedChats[uuid] = this;
         this.uuid = uuid;
+        console.log("New chat " + uuid);
+    }
+
+    addElement(chatElement) {
+        this.messages.push(chatElement);
     }
 }
 
@@ -185,6 +222,13 @@ class ChatElement {
     content;
     timestamp;
     uuid;
+
+    constructor(author, content, timestamp, uuid) {
+        this.author = new SimpleUser();
+        this.content = content;
+        this.timestamp = timestamp;
+        this.uuid = uuid;
+    }
 }
 
 class ChatSidebarElement {
@@ -229,3 +273,28 @@ socket.onopen = function (event) {
 socket.onmessage = function (event) {
     responseHandler.handleResponse(event.data);
 }
+
+function getCookie(cname) {
+    var name = cname + "=";
+    var decodedCookie = decodeURIComponent(document.cookie);
+    var ca = decodedCookie.split(';');
+    for(var i = 0; i <ca.length; i++) {
+        var c = ca[i];
+        while (c.charAt(0) == ' ') {
+            c = c.substring(1);
+        }
+        if (c.indexOf(name) == 0) {
+            return c.substring(name.length, c.length);
+        }
+    }
+    return "";
+}
+
+function setCookie(cname, cvalue, exdays) {
+    var d = new Date();
+    d.setTime(d.getTime() + (exdays*24*60*60*1000));
+    var expires = "expires="+ d.toUTCString();
+    document.cookie = cname + "=" + cvalue + ";" + expires + ";path=/";
+}
+
+setCookie("uuid", "b0d43c22-6392-4237-8619-e75b5ed41f9f", 0)

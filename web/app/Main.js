@@ -3,7 +3,8 @@ const app = Vue.createApp({
         return {
             chatSidebarElements: [],
             appTitle: "WhatsWeb",
-            currentChatElementId: null
+            currentChatElementId: null,
+            currentGroupObject: null,
         }
     },
     methods: {
@@ -18,6 +19,11 @@ const app = Vue.createApp({
             if (element.type === "group") {
                 Group.loadGroup(element.uuid);
             }
+        }
+    },
+    computed: {
+        uuid() {
+            return getCookie("uuid");
         }
     },
     mounted() {

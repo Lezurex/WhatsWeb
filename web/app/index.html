@@ -15,31 +15,11 @@
     <chatlistcomponent
             :apptitle="appTitle"
             :chatsidebarelements="chatSidebarElements" @loadchat="loadChat"></chatlistcomponent>
-    <div id="chat-panel">
-        <div id="chat-header">
-            <h1 class="chat-h1">Gruppe 1</h1>
-        </div>
-        <div id="chat-content">
-            <div class="message message-right">
-                <div>
-                    <h1>Lenny Angst</h1>
-                </div>
-            </div>
-            <div class="message message-left">
-                <div>
-                    <h1>Lenny Angst</h1>
-                </div>
-            </div>
-        </div>
-        <div id="chat-input-area">
-            <label for="chat-input">Nachricht:</label>
-            <input type="text" id="chat-input">
-            <button id="chat-input-send-btn">Senden</button>
-        </div>
-    </div>
+    <chat-view :group="currentGroupObject" :uuid="uuid"></chat-view>
 </main>
 <script src="Main.js"></script>
 <script src="components/ChatListComponent.js"></script>
+<script src="components/ChatViewComponent.js"></script>
 
 <script>const mountedApp = app.mount("#main")</script>
 
