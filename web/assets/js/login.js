@@ -15,7 +15,7 @@ class Login {
             success: function (data, textStatus, xhr) {
                 switch (data) {
                     case "200":
-                        window.location.href = "http://" + window.location.hostname + "/app";
+                        window.location.href = window.location.origin + "/app";
                         break;
                     default:
                         alert("FALSCH!");
@@ -24,7 +24,7 @@ class Login {
             error: function (error) {
                 alert("FALSCH!");
             }
-        })
+        });
     }
 }
 
@@ -35,14 +35,65 @@ class Registration {
     static passwordRepeat = $("#registration-password-repeat");
     static btn = $("#registration-btn");
 
+    static queryRegistration() {
+        $.ajax({
+            method: "post",
+            url: "http://" + window.location.hostname + "/php/register.php",
+            data: {
+                "email": this.email.val(),
+                "username": this.username.val(),
+                "password": this.password.val()
+            },
+            success: function (data, textStatus, xhr) {
+                switch (data) {
+                    case "200":
+                        window.location.href = window.location.origin + "/app";
+                        break;
+                    default:
+                        alert("Es ist ein Fehler aufgetreten!");
+                }
+            },
+            error: function (error) {
+                alert("Es ist ein Fehler aufgetreten!");
+            }
+        });
+    }
+
+    static allFieldsFilled() {
+        let count = 0;
+        if (this.email.val() !== "")
+            count++;
+        if (this.username.val() !== "")
+            count++;
+        if (this.password.val() !== "")
+            count++;
+        if (this.passwordRepeat.val() !== "")
+            count++;
+
+        if (count === 4) {
+            return true;
+        }
+        return false;
+    }
+
 }
 
 $(document).ready(function () {
-    $(Login.btn.on("click", function () {
+    Login.btn.on("click", function () {
         Login.queryLogin();
         Login.password.val(); // Gibt den Wert zurück
 
-    }));
+    });
+
+    Registration.btn.on("click", function () {
+        if (Registration.allFieldsFilled()) {
+            if (Registration.password.val() === Registration.passwordRepeat.val()) {
+                Registration.queryRegistration();
+            } else
+                alert("Die Passwörter stimmen nicht überein!");
+        } else
+            alert("Es müssen alle Felder ausgefüllt sein!");
+    })
 })
 
     let x = document.getElementById("forgot");
