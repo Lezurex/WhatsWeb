@@ -2,11 +2,9 @@ package com.lezurex.whatsweb.server.commands.chat;
 
 import com.lezurex.whatsweb.server.commands.ServerCommand;
 import com.lezurex.whatsweb.server.enums.ResponseType;
-import com.lezurex.whatsweb.server.objects.Chat;
-import com.lezurex.whatsweb.server.objects.ChatElement;
-import com.lezurex.whatsweb.server.objects.Client;
-import com.lezurex.whatsweb.server.objects.Group;
+import com.lezurex.whatsweb.server.objects.*;
 import com.lezurex.whatsweb.server.utils.ResponseBuilder;
+import org.json.JSONArray;
 import org.json.JSONObject;
 
 import java.util.UUID;
@@ -67,7 +65,16 @@ public class ChatCommand implements ServerCommand {
                         setErrorCode("400").build());
                 return;
             }
-            response.put("messages", chat.getChatElementsAsJSONArray(chat.getChatElements(lastUUID, range)));
+            JSONArray jsonArray = chat.getChatElementsAsJSONArray(chat.getChatElements(lastUUID, range));
+            JSONArray messages = new JSONArray();
+            for (int i = 0; i < jsonArray.length(); i++) {
+                JSONObject message = jsonArray.getJSONObject(i);
+                UUID authorUUID = UUID.fromString(message.getString("author"));
+
+                message.put("author", User.loadUser(authorUUID).toSimpleUser().toJSONObject());
+                messages.put(message);
+            }
+            response.put("messages", messages);
         }
         response.put("subcommand", subCommand).put("uuid", uuid.toString());
         client.getSocket().send(new ResponseBuilder(ResponseType.RESPONSE).setResponseCommand("chat").setResponseData(response).build());
@@ -76,7 +83,7 @@ public class ChatCommand implements ServerCommand {
     private void sendMessage(Client client, UUID chatUUID, String message) {
         final Chat chat = Chat.loadChat(chatUUID);
 
-        if(chat == null) {
+        if (chat == null) {
             client.getSocket().send(new ResponseBuilder(ResponseType.ERROR).
                     setErrorTitle("Chat not found").
                     setErrorDescription("The provided id isn't assigned to a chat").

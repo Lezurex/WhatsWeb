@@ -130,7 +130,9 @@ public class Group {
         this.chat.addMessage(chatElement);
 
         final JSONObject payload = new JSONObject();
-        payload.put("uuid", uuid.toString()).put("message", chatElement.toJSONObject());
+        JSONObject messageObject = chatElement.toJSONObject();
+        messageObject.put("author", chatElement.getAuthor().toSimpleUser().toJSONObject());
+        payload.put("uuid", uuid.toString()).put("message", messageObject);
 
         this.members.forEach((memberUUID, user) -> {
             Server.clients.forEach((webSocket, client) -> {

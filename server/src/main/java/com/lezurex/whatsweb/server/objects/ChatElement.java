@@ -30,7 +30,7 @@ public class ChatElement {
 
     public JSONObject toJSONObject() {
         return new JSONObject()
-                .put("author", this.author.toSimpleUser().toJSONObject())
+                .put("author", this.author.getUuid().toString())
                 .put("content", this.content)
                 .put("timestamp", this.timestamp)
                 .put("uuid", this.uuid);
