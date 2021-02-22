@@ -34,7 +34,6 @@ jobs:
         # https://docs.github.com/en/free-pro-team@latest/github/finding-security-vulnerabilities-and-errors-in-your-code/configuring-code-scanning#changing-the-languages-that-are-analyzed
 
     steps:
-    - run: cd /server
     - name: Checkout repository
       uses: actions/checkout@v2
 
@@ -50,6 +49,7 @@ jobs:
 
     # Autobuild attempts to build any compiled languages  (C/C++, C#, or Java).
     # If this step fails, then you should remove it and run the build manually (see below)
+    - run: cd ./server
     - name: Autobuild
       uses: github/codeql-action/autobuild@v1
 
