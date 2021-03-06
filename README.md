@@ -1,5 +1,5 @@
 # WhatsWeb
-Einfache Messagin-Webapp
+Einfache Messaging-Webapp
 
 ## Features
 - Login
