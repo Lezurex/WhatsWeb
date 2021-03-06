@@ -1,5 +1,5 @@
 # WhatsWeb
-Simple messaging webapp similar to WhatsApp.
+Einfache Messagin-Webapp
 
 ## Features
 - Login
